@@ -1,22 +1,11 @@
-<?php
-
-    $scripts = array(
-                        "welcome",
-                        "database",
-                        "admin",
-                        "components",
-                        "finish"
-                    );
-
-    $pre_installed = array(
-						"users"=>array("title"=>"Авторизация"),
-						"database"=>array("title"=>"Библиотека для работы с БД"),
-						"templates"=>array("title"=>"Библиотеки шаблонизатора"),
-						"editors"=>array("title"=>"Редакторы: CodeMirror и TinyMCE")
-                           );
-
-    $recommend = array(
-						"news"=>array("checked"=>1)
-						);
-
+<?php 
+class Config{
+    const db_pref = "develop_";
+    const db_host = "localhost";
+    const db_user = "root";
+    const db_pass = "";
+    const db_name = "test";
+    const site_url = "http://my.local/cms";
+    const site_name = "CMS Develop Site";
+}
 ?>
