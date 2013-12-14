@@ -1,0 +1,37 @@
+<br/>В данной версии установщика нет возможности установки расширений из файла или из каталога расширений.<br/>
+<form action='#' method='post'>
+
+	<br/>
+
+	<select name='ext' size='1'>
+	
+		<option value='script' selected='true'>Установка  скрипта</option>
+		<option value='library'>Установка библиотеки</option>
+		<option value='block'>Создание блока</option>
+	
+	</select><br/>
+	
+	Название скрипта\блока:<br/>
+	<input type='text' name='title' /><br/>
+	
+	Алиас скрипта\блока\загружаемой библиотеки:<br/>
+	<input type='text' name='alias' /><br/>
+	
+	Название файла библиотеки\скрипта(без расширения *.php):<br/>
+	<input type='text' name='file' /><br/>
+	
+	Алиас позиции для вывода блока:<br/>
+	<input type='text' name='position' /><br/>
+	
+	Строка настроек входных точек скрипта(все входные точки по умолчанию будут отключены):<br/>
+	<input type='text' name='entries' /><br/>
+	
+	<input type='checkbox' name='active' value='1' style='width: 20px;'>Бибилиотека загружается на всех страницах<br/>
+	
+	Код блока\скрипта\библиотеки:<br/>
+	<textarea name='code' style='height: 100px;'></textarea><br/>
+	
+	<input type='submit' value='Установить' />
+	
+
+</form>
