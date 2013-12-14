@@ -68,7 +68,7 @@ class users{
             
             if($login != "" && $login != "" && libs::GetLib("database")->getField("users", "password", "login", $login) == $pass){$ok = true;}else{$ok = false;}
 		
-            if($ok == "true"){return "Логин занят.";}
+            if($ok == "true"){return "Р›РѕРіРёРЅ Р·Р°РЅСЏС‚.";}
             elseif(filter_input(INPUT_POST,'mail') != ""){
                     $user['login'] = $login; $user['password'] = $pass;
                     $user['mail'] = filter_input(INPUT_POST,'mail');

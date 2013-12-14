@@ -15,7 +15,7 @@ class templates_types{
 				
 					if($tag['style'] != null && is_file("tmpl/".libs::GetLib("templates")->template_name."/".$tag['style'].".html"))$block_tmpl = file_get_contents("tmpl/".libs::GetLib("templates")->template_name."/".$tag['style'].".html");
                                         elseif(is_file("tmpl/".libs::GetLib("templates")->template_name."/block.html")){$block_tmpl = file_get_contents("tmpl/".libs::GetLib("templates")->template_name."/block.html");}
-                                        else{$block_tmpl = 'Не удалось найти файл шаблона для блока(нет стандартного шаблона блока и нет заявленного шаблона блока).';}
+                                        else{$block_tmpl = 'РќРµ СѓРґР°Р»РѕСЃСЊ РЅР°Р№С‚Рё С„Р°Р№Р» С€Р°Р±Р»РѕРЅР° РґР»СЏ Р±Р»РѕРєР°(РЅРµС‚ СЃС‚Р°РЅРґР°СЂС‚РЅРѕРіРѕ С€Р°Р±Р»РѕРЅР° Р±Р»РѕРєР° Рё РЅРµС‚ Р·Р°СЏРІР»РµРЅРЅРѕРіРѕ С€Р°Р±Р»РѕРЅР° Р±Р»РѕРєР°).';}
 				
 					$return .= str_replace("[content]",$block['code'],str_replace("[title]",$block['title'],$block_tmpl));
 				
@@ -32,7 +32,7 @@ class templates_types{
 			
                         if($tag['style'] != null && is_file("tmpl/".libs::GetLib("templates")->template_name."/".$tag['style'].".html")){$block_tmpl = file_get_contents("tmpl/".libs::GetLib("templates")->template_name."/".$tag['style'].".html");}
                         elseif(is_file("tmpl/".libs::GetLib("templates")->template_name."/block.html")){$block_tmpl = file_get_contents("tmpl/".libs::GetLib("templates")->template_name."/block.html");}
-                        else{$block_tmpl = 'Не удалось найти файл шаблона для блока(нет стандартного шаблона блока и нет заявленного шаблона блока).';}
+                        else{$block_tmpl = 'РќРµ СѓРґР°Р»РѕСЃСЊ РЅР°Р№С‚Рё С„Р°Р№Р» С€Р°Р±Р»РѕРЅР° РґР»СЏ Р±Р»РѕРєР°(РЅРµС‚ СЃС‚Р°РЅРґР°СЂС‚РЅРѕРіРѕ С€Р°Р±Р»РѕРЅР° Р±Р»РѕРєР° Рё РЅРµС‚ Р·Р°СЏРІР»РµРЅРЅРѕРіРѕ С€Р°Р±Р»РѕРЅР° Р±Р»РѕРєР°).';}
 			
 			$return = str_replace("[content]",$block['code'],str_replace("[title]",$block['title'],$block_tmpl));
 		
@@ -71,7 +71,7 @@ class templates_types{
 				$link = explode("|",$element);
 				if(libs::LoadLib("users")){
 					if(libs::GetLib("users")->GetGroup() == $link[2] || $link[2] == "all")$return .= libs::GetLib("templates")->getRTmpl($tag['style'],array("title"=>$link[0],"link"=>$link[1]));//"<a href='".$link[1]."'>".$link[0]."</a>";
-                                }else{echo "Нет библиотеки 'users'.";}
+                                }else{echo "РќРµС‚ Р±РёР±Р»РёРѕС‚РµРєРё 'users'.";}
 			}
 			
 		}else{$this->getRegistredTypeBy($tag);}
@@ -94,7 +94,7 @@ class templates_types{
 	
 	private function getRegistredTypeBy($tag){
 	
-		return "Используется не зарегестрированный тип вывода данных '$tag'.";
+		return "РСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РЅРµ Р·Р°СЂРµРіРµСЃС‚СЂРёСЂРѕРІР°РЅРЅС‹Р№ С‚РёРї РІС‹РІРѕРґР° РґР°РЅРЅС‹С… '$tag'.";
 	
 	}
 	

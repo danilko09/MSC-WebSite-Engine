@@ -1,42 +1,42 @@
 <?php
 
-	$content = "<h5>Редактор скриптов</h5><a href='%adress%/index.php/admin'>На главную страницу панели управления.</a>";
+	$content = "<h5>Р РµРґР°РєС‚РѕСЂ СЃРєСЂРёРїС‚РѕРІ</h5><a href='%adress%/index.php/admin'>РќР° РіР»Р°РІРЅСѓСЋ СЃС‚СЂР°РЅРёС†Сѓ РїР°РЅРµР»Рё СѓРїСЂР°РІР»РµРЅРёСЏ.</a>";
 	$db = libs::GetLib("database");
 	
 	if($adm[3] == ""){
 	
 		$scripts = $db->getAll("scripts","id",true);
-		$content .= "<br/>Найдите скрипт в списке и выберите действие, которое хотите совершить.<br/>Или нажмите по названию скрипта, данные которого вы хотите изменить.<br/><br/>";
-		$content .= "Скрипты:<br/>";
+		$content .= "<br/>РќР°Р№РґРёС‚Рµ СЃРєСЂРёРїС‚ РІ СЃРїРёСЃРєРµ Рё РІС‹Р±РµСЂРёС‚Рµ РґРµР№СЃС‚РІРёРµ, РєРѕС‚РѕСЂРѕРµ С…РѕС‚РёС‚Рµ СЃРѕРІРµСЂС€РёС‚СЊ.<br/>РР»Рё РЅР°Р¶РјРёС‚Рµ РїРѕ РЅР°Р·РІР°РЅРёСЋ СЃРєСЂРёРїС‚Р°, РґР°РЅРЅС‹Рµ РєРѕС‚РѕСЂРѕРіРѕ РІС‹ С…РѕС‚РёС‚Рµ РёР·РјРµРЅРёС‚СЊ.<br/><br/>";
+		$content .= "РЎРєСЂРёРїС‚С‹:<br/>";
 		foreach($scripts as $num => $script){
 		
 			$link['code'] = "%adress%/index.php/admin/scripts/edit/code/".$script['id'];
 			$link['delete'] = "%adress%/index.php/admin/scripts/delete/".$script['id'];
 			
-			$content .= ($num+1)."."."<a href='%adress%/index.php/admin/scripts/edit/properties/".$script['id']."'>".$script['title']."</a> [<a href='".$link['code']."'>Редактировать код</a> | <a href='".$link['delete']."'>Удалить</a>]<br/>";
+			$content .= ($num+1)."."."<a href='%adress%/index.php/admin/scripts/edit/properties/".$script['id']."'>".$script['title']."</a> [<a href='".$link['code']."'>Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ РєРѕРґ</a> | <a href='".$link['delete']."'>РЈРґР°Р»РёС‚СЊ</a>]<br/>";
 		
 		}
 		
                 $dir = opendir('lib');
-                $content .= "<br/>Библиотеки: <br/>";
+                $content .= "<br/>Р‘РёР±Р»РёРѕС‚РµРєРё: <br/>";
                 $f = 1;
                 while($d = readdir($dir)){
                     if($d != "." && $d != ".." && !is_dir("lib/".$d)){
                         
                         $a = explode('.', $d);
-                        $content .= $f.".<a href='%adress%/index.php/admin/scripts/libs/edit/".$d."'>".$a[0]."</a> [<a href='%adress%/index.php/admin/scripts/libs/edit/".$d."'>Редактировать код</a> | <a href='%adress%/index.php/admin/scripts/libs/del/".$d."'>Удалить</a>]<br/>";
+                        $content .= $f.".<a href='%adress%/index.php/admin/scripts/libs/edit/".$d."'>".$a[0]."</a> [<a href='%adress%/index.php/admin/scripts/libs/edit/".$d."'>Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ РєРѕРґ</a> | <a href='%adress%/index.php/admin/scripts/libs/del/".$d."'>РЈРґР°Р»РёС‚СЊ</a>]<br/>";
                         $f++;
 
                     }
 		}
 		
                 
-		$content .= "<div><br/><a href='%adress%/index.php/admin/scripts/register'>Зарегистрировать новый скрипт.</a><br/></div>";
+		$content .= "<div><br/><a href='%adress%/index.php/admin/scripts/register'>Р—Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°С‚СЊ РЅРѕРІС‹Р№ СЃРєСЂРёРїС‚.</a><br/></div>";
 		
 	}
         elseif($adm[3] == "edit"){
 	
-		$content .= " | <a href='%adress%/index.php/admin/scripts/'>К скписку скриптов</a>";
+		$content .= " | <a href='%adress%/index.php/admin/scripts/'>Рљ СЃРєРїРёСЃРєСѓ СЃРєСЂРёРїС‚РѕРІ</a>";
 	
 		switch($adm[4]){
 		
@@ -50,11 +50,11 @@
                                         if(is_file("scripts/".$file.".php")){$scode = file_get_contents("scripts/".$file.".php");}
                                         else{$scode = "<?php \r\n\r\nclass ".$db->GetFieldOnID("scripts",$adm[5],"alias")."{\r\n\r\n}\r\n\r\n?>";}
                                         if(libs::LoadLib("editors/code")){$content .= libs::getLib("templates")->getRTmpl("admin/script_edit_code",array("code"=>libs::GetLib("editors/code")->GetField("code",$scode),"method"=>"post","action"=>"%adress%/index.php/admin/scripts/save/code/".$adm[5]));}
-                                        else{$content .= libs::getLib("templates")->getRTmpl("error",array("message"=>"Не удалось загрузить библиотеку редактора кода."));}
+                                        else{$content .= libs::getLib("templates")->getRTmpl("error",array("message"=>"РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ Р±РёР±Р»РёРѕС‚РµРєСѓ СЂРµРґР°РєС‚РѕСЂР° РєРѕРґР°."));}
 					
 
 				}else{
-					$content .= libs::getLib("templates")->getRTmpl("error",array("message"=>"Использован не верный id или id не существующего скрипта."));
+					$content .= libs::getLib("templates")->getRTmpl("error",array("message"=>"РСЃРїРѕР»СЊР·РѕРІР°РЅ РЅРµ РІРµСЂРЅС‹Р№ id РёР»Рё id РЅРµ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РµРіРѕ СЃРєСЂРёРїС‚Р°."));
 				}
 				
 			break;
@@ -85,15 +85,15 @@
 						
 							if($real[$value['entry_title']] == "1"){
 							
-								$act['code'] .= ($act['n']).".".$value['entry_title']." [<a href='%adress%/index.php/admin/scripts/edit/entries/del/".$value['id']."'>Отключить</a>]<br/>";
+								$act['code'] .= ($act['n']).".".$value['entry_title']." [<a href='%adress%/index.php/admin/scripts/edit/entries/del/".$value['id']."'>РћС‚РєР»СЋС‡РёС‚СЊ</a>]<br/>";
 								$acr['n']++;
 								$real[$value['entry_title']] = "0";
 							
 							}elseif($real[$value['entry_title']] == "0"){
-								$deffect['code'] .= $deffect['n'].".".$value['entry_title']." (Дубль активной входной точки)[<a href='%adress%/index.php/admin/scripts/edit/entries/del/".$value['id']."'>Удалить</a>]<br/>";
+								$deffect['code'] .= $deffect['n'].".".$value['entry_title']." (Р”СѓР±Р»СЊ Р°РєС‚РёРІРЅРѕР№ РІС…РѕРґРЅРѕР№ С‚РѕС‡РєРё)[<a href='%adress%/index.php/admin/scripts/edit/entries/del/".$value['id']."'>РЈРґР°Р»РёС‚СЊ</a>]<br/>";
 								$deffect['n']++;
 							}else{
-								$deffect['code'] .= $deffect['n'].".".$value['entry_title']." (Ссылается на неизвестную входную точку)[<a href='%adress%/index.php/admin/scripts/edit/entries/del/".$value['id']."'>Удалить</a>]<br/>";
+								$deffect['code'] .= $deffect['n'].".".$value['entry_title']." (РЎСЃС‹Р»Р°РµС‚СЃСЏ РЅР° РЅРµРёР·РІРµСЃС‚РЅСѓСЋ РІС…РѕРґРЅСѓСЋ С‚РѕС‡РєСѓ)[<a href='%adress%/index.php/admin/scripts/edit/entries/del/".$value['id']."'>РЈРґР°Р»РёС‚СЊ</a>]<br/>";
 								$deffect['n']++;
 							}
 						
@@ -103,14 +103,14 @@
 					foreach($real as $code=>$num){
 					
 						if($num == "1"){
-							$unact['code'] .= $unact['n'].".".$code." [<a href='%adress%/index.php/admin/scripts/edit/entries/add/".$script[0]['alias']."/".$code."'>Активировать</a>]<br/>";
+							$unact['code'] .= $unact['n'].".".$code." [<a href='%adress%/index.php/admin/scripts/edit/entries/add/".$script[0]['alias']."/".$code."'>РђРєС‚РёРІРёСЂРѕРІР°С‚СЊ</a>]<br/>";
 						}
 					
 					}
 					
-					if($act['code'] == "") $act['code'] = "[Нет активных входных точек]";
-					if($unact['code'] == "") $unact['code'] = "[Нет неактивных входных точек]";
-					if($deffect['code'] == "") $deffect['code'] = "[Нет деффектных входных точек]";
+					if($act['code'] == "") $act['code'] = "[РќРµС‚ Р°РєС‚РёРІРЅС‹С… РІС…РѕРґРЅС‹С… С‚РѕС‡РµРє]";
+					if($unact['code'] == "") $unact['code'] = "[РќРµС‚ РЅРµР°РєС‚РёРІРЅС‹С… РІС…РѕРґРЅС‹С… С‚РѕС‡РµРє]";
+					if($deffect['code'] == "") $deffect['code'] = "[РќРµС‚ РґРµС„С„РµРєС‚РЅС‹С… РІС…РѕРґРЅС‹С… С‚РѕС‡РµРє]";
 					
 					$arr['active'] = $act['code'];
 					$arr['unactive'] = $unact['code'];
@@ -123,23 +123,23 @@
 					$script = $db->getAllOnField("scripts","alias",$adm[6],"id",true);
 					
 					if($db->isExists("scripts_entries","entry_title",$adm[7])){
-						$content .= libs::GetLib("templates")->getRTmpl("error",array("message"=>"Данная входная точка уже активна.<br/>Если вы получаете это сообщение при активации не активной входной точки, то, возможно, эта входная точка уже используется другим скриптом."));
+						$content .= libs::GetLib("templates")->getRTmpl("error",array("message"=>"Р”Р°РЅРЅР°СЏ РІС…РѕРґРЅР°СЏ С‚РѕС‡РєР° СѓР¶Рµ Р°РєС‚РёРІРЅР°.<br/>Р•СЃР»Рё РІС‹ РїРѕР»СѓС‡Р°РµС‚Рµ СЌС‚Рѕ СЃРѕРѕР±С‰РµРЅРёРµ РїСЂРё Р°РєС‚РёРІР°С†РёРё РЅРµ Р°РєС‚РёРІРЅРѕР№ РІС…РѕРґРЅРѕР№ С‚РѕС‡РєРё, С‚Рѕ, РІРѕР·РјРѕР¶РЅРѕ, СЌС‚Р° РІС…РѕРґРЅР°СЏ С‚РѕС‡РєР° СѓР¶Рµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґСЂСѓРіРёРј СЃРєСЂРёРїС‚РѕРј."));
 					}else{
 						$db->insert("scripts_entries",array("entry_title"=>$adm[7],"script_alias"=>$adm[6]));
-						$content .= libs::GetLib("templates")->getRTmpl("success",array("message"=>"Входная точка успешно активирована."));
+						$content .= libs::GetLib("templates")->getRTmpl("success",array("message"=>"Р’С…РѕРґРЅР°СЏ С‚РѕС‡РєР° СѓСЃРїРµС€РЅРѕ Р°РєС‚РёРІРёСЂРѕРІР°РЅР°."));
 					}
 				
 				}elseif($adm[5] == "del"){
 				
 					if($db->isExists("scripts_entries","id",$adm[6])){
 						$db->deleteOnID("scripts_entries",$adm[6]);
-						$content .= libs::GetLib("templates")->getRTmpl("success",array("message"=>"Входная точка успешно отключена."));
+						$content .= libs::GetLib("templates")->getRTmpl("success",array("message"=>"Р’С…РѕРґРЅР°СЏ С‚РѕС‡РєР° СѓСЃРїРµС€РЅРѕ РѕС‚РєР»СЋС‡РµРЅР°."));
 					}else{
-						$content .= libs::GetLib("templates")->getRTmpl("error",array("message"=>"Данная входная точка уже не активна или была удалена."));
+						$content .= libs::GetLib("templates")->getRTmpl("error",array("message"=>"Р”Р°РЅРЅР°СЏ РІС…РѕРґРЅР°СЏ С‚РѕС‡РєР° СѓР¶Рµ РЅРµ Р°РєС‚РёРІРЅР° РёР»Рё Р±С‹Р»Р° СѓРґР°Р»РµРЅР°."));
 					}
 				
 				}else{
-					$content .= libs::getLib("templates")->getRTmpl("error",array("message"=>"Использован не верный id или id не существующего скрипта."));
+					$content .= libs::getLib("templates")->getRTmpl("error",array("message"=>"РСЃРїРѕР»СЊР·РѕРІР°РЅ РЅРµ РІРµСЂРЅС‹Р№ id РёР»Рё id РЅРµ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РµРіРѕ СЃРєСЂРёРїС‚Р°."));
 				}
 				
 			break;*/
@@ -154,13 +154,13 @@
 					
 					$content .= libs::getLib("templates")->getRTmpl("admin/script_edit",$sc[0]);
 				}else{
-					$content .= libs::getLib("templates")->getRTmpl("error",array("message"=>"Использован не верный id или id не существующего скрипта."));
+					$content .= libs::getLib("templates")->getRTmpl("error",array("message"=>"РСЃРїРѕР»СЊР·РѕРІР°РЅ РЅРµ РІРµСЂРЅС‹Р№ id РёР»Рё id РЅРµ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РµРіРѕ СЃРєСЂРёРїС‚Р°."));
 				}
 				
 			break;
 			
 			default:
-				$content .= libs::GetLib("templates")->getRTmpl("error",array("message"=>"Не верная операция редактирования скрипта."));
+				$content .= libs::GetLib("templates")->getRTmpl("error",array("message"=>"РќРµ РІРµСЂРЅР°СЏ РѕРїРµСЂР°С†РёСЏ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ СЃРєСЂРёРїС‚Р°."));
 			break;
 		
 		}
@@ -168,7 +168,7 @@
 	}elseif($adm[3] == "save"){
 	
 	
-		$content .= " | <a href='%adress%/index.php/admin/scripts/'>К скписку скриптов</a>";
+		$content .= " | <a href='%adress%/index.php/admin/scripts/'>Рљ СЃРєРїРёСЃРєСѓ СЃРєСЂРёРїС‚РѕРІ</a>";
 	
 		switch($adm[4]){
 		
@@ -181,7 +181,7 @@
 				fwrite($file, $code);
 				fclose($file);
 				
-				$content .= libs::GetLib("templates")->getRTmpl("success",array("message"=>"Код скрипта '".$script[0]['title']."' успешно сохранены."));			
+				$content .= libs::GetLib("templates")->getRTmpl("success",array("message"=>"РљРѕРґ СЃРєСЂРёРїС‚Р° '".$script[0]['title']."' СѓСЃРїРµС€РЅРѕ СЃРѕС…СЂР°РЅРµРЅС‹."));			
 			break;
                     
                         case "lib_code":
@@ -195,7 +195,7 @@
 				fwrite($file, $code);
 				fclose($file);
 				
-				$content .= libs::GetLib("templates")->getRTmpl("success",array("message"=>"Код библиотеки '".$class."' успешно сохранены."));			
+				$content .= libs::GetLib("templates")->getRTmpl("success",array("message"=>"РљРѕРґ Р±РёР±Р»РёРѕС‚РµРєРё '".$class."' СѓСЃРїРµС€РЅРѕ СЃРѕС…СЂР°РЅРµРЅС‹."));			
 			break;
 			
 			case "properties":
@@ -204,11 +204,11 @@
 				$db->setField("scripts","alias",filter_input(INPUT_POST,'alias'),"id",$adm[5]);
 				$db->setField("scripts","file",filter_input(INPUT_POST,'file'),"id",$adm[5]);
 				
-				$content .= libs::GetLib("templates")->getRTmpl("success",array("message"=>"Параметры скрипта '".$script[0]['title']."' успешно сохранены."));			
+				$content .= libs::GetLib("templates")->getRTmpl("success",array("message"=>"РџР°СЂР°РјРµС‚СЂС‹ СЃРєСЂРёРїС‚Р° '".$script[0]['title']."' СѓСЃРїРµС€РЅРѕ СЃРѕС…СЂР°РЅРµРЅС‹."));			
 			break;
 		
 			default:
-				$content .= libs::getLib("templates")->getRTmpl("error",array("message"=> "Не верная операция."));
+				$content .= libs::getLib("templates")->getRTmpl("error",array("message"=> "РќРµ РІРµСЂРЅР°СЏ РѕРїРµСЂР°С†РёСЏ."));
 			break;
 		
 		}
@@ -216,22 +216,22 @@
 	}
         elseif($adm[3] == "delete"){
 	
-		$content .= " | <a href='%adress%/index.php/admin/scripts/'>К скписку скриптов</a>";	
+		$content .= " | <a href='%adress%/index.php/admin/scripts/'>Рљ СЃРєРїРёСЃРєСѓ СЃРєСЂРёРїС‚РѕРІ</a>";	
 
 		if($db->isExists("scripts","id",$adm[4])){
 		
 			$title = $db->GetField("scripts","title","id",$adm[4]);
                         if(is_file("scripts/".$db->GetField("scripts","file","id",$adm[4]).".php")){unlink("scripts/".$db->GetField("scripts","file","id",$adm[4]).".php");}
 			$db->DeleteOnID("scripts",$adm[4]);
-			$content .= libs::GetLib("templates")->GetRTmpl("success",array("message"=>"Скрипт '$title' удален."));
+			$content .= libs::GetLib("templates")->GetRTmpl("success",array("message"=>"РЎРєСЂРёРїС‚ '$title' СѓРґР°Р»РµРЅ."));
 
-                }else{$content .= libs::GetLib("templates")->GetRTmpl("error",array("message"=>"Скрипт с таким id не найден."));}
+                }else{$content .= libs::GetLib("templates")->GetRTmpl("error",array("message"=>"РЎРєСЂРёРїС‚ СЃ С‚Р°РєРёРј id РЅРµ РЅР°Р№РґРµРЅ."));}
 			
 	
 	}
         elseif($adm[3] == "register"){
 	
-		$content .= " | <a href='%adress%/index.php/admin/scripts/'>К скписку скриптов</a>";
+		$content .= " | <a href='%adress%/index.php/admin/scripts/'>Рљ СЃРєРїРёСЃРєСѓ СЃРєСЂРёРїС‚РѕРІ</a>";
 		
 		if(filter_input(INPUT_POST,'alias') == null || filter_input(INPUT_POST,'file') == null){
 			$content .= libs::GetLib("templates")->GetTmpl("admin/reg_script");
@@ -241,13 +241,13 @@
 			$alias = filter_input(INPUT_POST,'alias');
 			$file = filter_input(INPUT_POST,'file');
 			
-			if(!$db->isExists("scripts","alias",$alias)) {$db->insert("scripts",array("alias"=>$alias,"title"=>$title,"file"=>$file)); $content .= libs::GetLib("templates")->getRTmpl("success",array("message"=>"Скрипт '".$title."' успешно зарегистрирован."));} 
-                        else{$content .= libs::GetLib("templates")->getRTmpl("error",array("message"=>"Скрипт с алиасом '".$alias."' был зарегистрирован ранее."));}
+			if(!$db->isExists("scripts","alias",$alias)) {$db->insert("scripts",array("alias"=>$alias,"title"=>$title,"file"=>$file)); $content .= libs::GetLib("templates")->getRTmpl("success",array("message"=>"РЎРєСЂРёРїС‚ '".$title."' СѓСЃРїРµС€РЅРѕ Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°РЅ."));} 
+                        else{$content .= libs::GetLib("templates")->getRTmpl("error",array("message"=>"РЎРєСЂРёРїС‚ СЃ Р°Р»РёР°СЃРѕРј '".$alias."' Р±С‹Р» Р·Р°СЂРµРіРёСЃС‚СЂРёСЂРѕРІР°РЅ СЂР°РЅРµРµ."));}
 		}
 	
 	}
         elseif($adm[3] == "libs"){
-            $content .= " | <a href='%adress%/index.php/admin/scripts/'>К списку скриптов.</a>";
+            $content .= " | <a href='%adress%/index.php/admin/scripts/'>Рљ СЃРїРёСЃРєСѓ СЃРєСЂРёРїС‚РѕРІ.</a>";
         
             if($adm[4] == "edit"){
                 libs::GetLib("templates")->SetPageTmpl("single");
@@ -259,13 +259,13 @@
                         if(is_file("lib/".$adm[5])){$scode = file_get_contents("lib/".$adm[5]);}
                         else{$scode = "<?php \r\n\r\nclass ".$class."{\r\n\r\n}\r\n\r\n?>";}
                         if(libs::LoadLib("editors/code")){$content .= libs::getLib("templates")->getRTmpl("admin/script_edit_code",array("code"=>libs::GetLib("editors/code")->GetField("code",$scode),"method"=>"post","action"=>"%adress%/index.php/admin/scripts/save/lib_code/".$adm[5]));}
-                        else{$content .= libs::getLib("templates")->getRTmpl("error",array("message"=>"Не удалось загрузить библиотеку редактора кода."));}
+                        else{$content .= libs::getLib("templates")->getRTmpl("error",array("message"=>"РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ Р±РёР±Р»РёРѕС‚РµРєСѓ СЂРµРґР°РєС‚РѕСЂР° РєРѕРґР°."));}
 
 
-                }else{$content .= libs::getLib("templates")->getRTmpl("error",array("message"=>"Использован не верный id или id не существующего скрипта."));}
-            }else{$content .= libs::GetLib("templates")->getRTmpl("error",array("message"=>"Неизвестная оперция над скриптами."));}
+                }else{$content .= libs::getLib("templates")->getRTmpl("error",array("message"=>"РСЃРїРѕР»СЊР·РѕРІР°РЅ РЅРµ РІРµСЂРЅС‹Р№ id РёР»Рё id РЅРµ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РµРіРѕ СЃРєСЂРёРїС‚Р°."));}
+            }else{$content .= libs::GetLib("templates")->getRTmpl("error",array("message"=>"РќРµРёР·РІРµСЃС‚РЅР°СЏ РѕРїРµСЂС†РёСЏ РЅР°Рґ СЃРєСЂРёРїС‚Р°РјРё."));}
             
         }
-        else{$content .= " | <a href='%adress%/index.php/admin/scripts/'>К скписку скриптов</a><br/><br/><div class='warning-box'>Не известный тип операции со скриптами.</div>";}
+        else{$content .= " | <a href='%adress%/index.php/admin/scripts/'>Рљ СЃРєРїРёСЃРєСѓ СЃРєСЂРёРїС‚РѕРІ</a><br/><br/><div class='warning-box'>РќРµ РёР·РІРµСЃС‚РЅС‹Р№ С‚РёРї РѕРїРµСЂР°С†РёРё СЃРѕ СЃРєСЂРёРїС‚Р°РјРё.</div>";}
 
 ?>

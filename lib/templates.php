@@ -12,13 +12,13 @@
 		
 			$db = libs::GetLib("database");$this->blocks = $db->getAll("blocks",true,true);$this->out = "1";
 			
-                        if(!is_dir("tmpl")){die("Не существует папка 'tmpl', вывод страницы не возможен.");}
+                        if(!is_dir("tmpl")){die("РќРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚ РїР°РїРєР° 'tmpl', РІС‹РІРѕРґ СЃС‚СЂР°РЅРёС†С‹ РЅРµ РІРѕР·РјРѕР¶РµРЅ.");}
 		
                         if($this->template_name == ""){$this->template_name="default";}
 			
-                        if(!is_dir('tmpl/'.$this->template_name) && !is_dir('tmpl/default')){die('Не существует папки текущего шаблона и файлов стандартного шаблона.');}
+                        if(!is_dir('tmpl/'.$this->template_name) && !is_dir('tmpl/default')){die('РќРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚ РїР°РїРєРё С‚РµРєСѓС‰РµРіРѕ С€Р°Р±Р»РѕРЅР° Рё С„Р°Р№Р»РѕРІ СЃС‚Р°РЅРґР°СЂС‚РЅРѕРіРѕ С€Р°Р±Р»РѕРЅР°.');}
 		
-                        if(!is_file("tmpl/".$this->template_name."/".$this->file_name.".html")){die('Не удалось найти основной файл шаблона, вывод страницы не возможен.');}
+                        if(!is_file("tmpl/".$this->template_name."/".$this->file_name.".html")){die('РќРµ СѓРґР°Р»РѕСЃСЊ РЅР°Р№С‚Рё РѕСЃРЅРѕРІРЅРѕР№ С„Р°Р№Р» С€Р°Р±Р»РѕРЅР°, РІС‹РІРѕРґ СЃС‚СЂР°РЅРёС†С‹ РЅРµ РІРѕР·РјРѕР¶РµРЅ.');}
 			$tmpl = file_get_contents("tmpl/".$this->template_name."/".$this->file_name.".html");
                         if($this->parse_content === "1"){$tmpl = str_replace("<content/>",$content, $tmpl);}
 			$out = $this->PrepearHTML($tmpl);
@@ -72,7 +72,7 @@
 			$return = $this->getTmpl($name);
 			if($return == str_replace("[file]", "%tmpl_root%/".$name.".html",file_get_contents("tmpl/".$this->template_name."/tmpl_not_found.html"))){
 			
-				$return = "<div><p>Во вроемя вывода шаблона возникла ошибка, но вам было передано следующее:</p>";
+				$return = "<div><p>Р’Рѕ РІСЂРѕРµРјСЏ РІС‹РІРѕРґР° С€Р°Р±Р»РѕРЅР° РІРѕР·РЅРёРєР»Р° РѕС€РёР±РєР°, РЅРѕ РІР°Рј Р±С‹Р»Рѕ РїРµСЂРµРґР°РЅРѕ СЃР»РµРґСѓСЋС‰РµРµ:</p>";
 			
 				foreach( $arr as $code=>$val ){$return .= "<p>$code: <br/>$val</p>";}
 				

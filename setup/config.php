@@ -9,10 +9,10 @@
                     );
 
     $pre_installed = array(
-						"users"=>array("title"=>"Àâòîðèçàöèÿ"),
-						"database"=>array("title"=>"Áèáëèîòåêà äëÿ ðàáîòû ñ ÁÄ"),
-						"templates"=>array("title"=>"Áèáëèîòåêè øàáëîíèçàòîðà"),
-						"editors"=>array("title"=>"Ðåäàêòîðû: CodeMirror è TinyMCE")
+						"users"=>array("title"=>"ÐÐ²Ñ‚Ð¾Ñ€Ð¸Ð·Ð°Ñ†Ð¸Ñ"),
+						"database"=>array("title"=>"Ð‘Ð¸Ð±Ð»Ð¸Ð¾Ñ‚ÐµÐºÐ° Ð´Ð»Ñ Ñ€Ð°Ð±Ð¾Ñ‚Ñ‹ Ñ Ð‘Ð”"),
+						"templates"=>array("title"=>"Ð‘Ð¸Ð±Ð»Ð¸Ð¾Ñ‚ÐµÐºÐ¸ ÑˆÐ°Ð±Ð»Ð¾Ð½Ð¸Ð·Ð°Ñ‚Ð¾Ñ€Ð°"),
+						"editors"=>array("title"=>"Ð ÐµÐ´Ð°ÐºÑ‚Ð¾Ñ€Ñ‹: CodeMirror Ð¸ TinyMCE")
                            );
 
     $recommend = array(

@@ -1,11 +1,11 @@
 <?php
         if($_SESSION['comp_step'] == 0){
             if(filter_input(INPUT_POST,'ch') == null){
-            $content .= "Установка компонентов.<br/><br/>Выберите, что хотите сделать: <br/>"
+            $content .= "РЈСЃС‚Р°РЅРѕРІРєР° РєРѕРјРїРѕРЅРµРЅС‚РѕРІ.<br/><br/>Р’С‹Р±РµСЂРёС‚Рµ, С‡С‚Рѕ С…РѕС‚РёС‚Рµ СЃРґРµР»Р°С‚СЊ: <br/>"
                     . "<form method='post'>"
-                    . "<input type='radio' name='ch' value='yes'/>Я хочу выбрать нужные мне библиотеки и скрипты.<br/>"
-                    . "<input type='radio' name='ch' value='no'/>Установить только основные скрипты и библиотеки.<br/>"
-                    . "<input type='radio' name='ch' value='all' checked='' />Установить все.<br/>"
+                    . "<input type='radio' name='ch' value='yes'/>РЇ С…РѕС‡Сѓ РІС‹Р±СЂР°С‚СЊ РЅСѓР¶РЅС‹Рµ РјРЅРµ Р±РёР±Р»РёРѕС‚РµРєРё Рё СЃРєСЂРёРїС‚С‹.<br/>"
+                    . "<input type='radio' name='ch' value='no'/>РЈСЃС‚Р°РЅРѕРІРёС‚СЊ С‚РѕР»СЊРєРѕ РѕСЃРЅРѕРІРЅС‹Рµ СЃРєСЂРёРїС‚С‹ Рё Р±РёР±Р»РёРѕС‚РµРєРё.<br/>"
+                    . "<input type='radio' name='ch' value='all' checked='' />РЈСЃС‚Р°РЅРѕРІРёС‚СЊ РІСЃРµ.<br/>"
                     . "<input type='submit' value='' style='
                         text-decoration: none;
                         background: url(%adress%/setup/tmpl/next.png) no-repeat;

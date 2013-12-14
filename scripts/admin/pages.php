@@ -1,23 +1,23 @@
 <?php
 
-	$content = "<h5>Менеждер страниц</h5><a href='%adress%/index.php/admin'>На главную страницу панели управления.</a>";
+	$content = "<h5>РњРµРЅРµР¶РґРµСЂ СЃС‚СЂР°РЅРёС†</h5><a href='%adress%/index.php/admin'>РќР° РіР»Р°РІРЅСѓСЋ СЃС‚СЂР°РЅРёС†Сѓ РїР°РЅРµР»Рё СѓРїСЂР°РІР»РµРЅРёСЏ.</a>";
 	$db = libs::GetLib("database");
 	
 	switch($adm[3]){
 	
 		case "":
 		
-			$content .= "<br/><br/>Для перехода на страницу найдите в списке название нужной страницы и перейдите по ссылке.<br/>Для редактирования страницы найдите название нужной страницы и в этой-же строчке нажмите по ссылке 'Редактировать'.<br/><br/>";
+			$content .= "<br/><br/>Р”Р»СЏ РїРµСЂРµС…РѕРґР° РЅР° СЃС‚СЂР°РЅРёС†Сѓ РЅР°Р№РґРёС‚Рµ РІ СЃРїРёСЃРєРµ РЅР°Р·РІР°РЅРёРµ РЅСѓР¶РЅРѕР№ СЃС‚СЂР°РЅРёС†С‹ Рё РїРµСЂРµР№РґРёС‚Рµ РїРѕ СЃСЃС‹Р»РєРµ.<br/>Р”Р»СЏ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ СЃС‚СЂР°РЅРёС†С‹ РЅР°Р№РґРёС‚Рµ РЅР°Р·РІР°РЅРёРµ РЅСѓР¶РЅРѕР№ СЃС‚СЂР°РЅРёС†С‹ Рё РІ СЌС‚РѕР№-Р¶Рµ СЃС‚СЂРѕС‡РєРµ РЅР°Р¶РјРёС‚Рµ РїРѕ СЃСЃС‹Р»РєРµ 'Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ'.<br/><br/>";
 		
 			$pages = $db->getAll("pages","id",true);
 			
 			foreach( $pages as $num=>$page ){
 			
-				$content .= ($num+1).".<a href='%adress%/index.php/".$page['alias']."'>".$page['title']."</a> [<a href='%adress%/index.php/admin/pages/edit/".$page['id']."'>Редактировать</a> | <a href='%adress%/index.php/admin/pages/edit-code/".$page['id']."'>Редактировать HTML-код</a> | <a href='%adress%/index.php/admin/pages/delete/".$page['id']."'>Удалить</a>]<br/>";
+				$content .= ($num+1).".<a href='%adress%/index.php/".$page['alias']."'>".$page['title']."</a> [<a href='%adress%/index.php/admin/pages/edit/".$page['id']."'>Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ</a> | <a href='%adress%/index.php/admin/pages/edit-code/".$page['id']."'>Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ HTML-РєРѕРґ</a> | <a href='%adress%/index.php/admin/pages/delete/".$page['id']."'>РЈРґР°Р»РёС‚СЊ</a>]<br/>";
 			
 			}
 			
-			$content .= "<br/><a href='%adress%/index.php/admin/pages/add'>Создать новую страницу</a>";
+			$content .= "<br/><a href='%adress%/index.php/admin/pages/add'>РЎРѕР·РґР°С‚СЊ РЅРѕРІСѓСЋ СЃС‚СЂР°РЅРёС†Сѓ</a>";
 		
 		break;
 		
@@ -26,7 +26,7 @@
 			$page_arr = $db->getAllOnField("pages","id",$adm[4],"id",true);
 			$page = $page_arr[0];
 			$page['action'] = "%adress%/index.php/admin/pages/save/".$page['id'];$page['method'] = "post";
-			$content .= " | <a href='%adress%/index.php/admin/pages/'>К списку страниц</a>";
+			$content .= " | <a href='%adress%/index.php/admin/pages/'>Рљ СЃРїРёСЃРєСѓ СЃС‚СЂР°РЅРёС†</a>";
 			
 			preg_match_all("|<content (.*)/>|U", $page['content'], $text_reply, PREG_SPLIT_NO_EMPTY);
                         foreach($text_reply[0] as $num=>$tag){$page['content'] = str_replace($tag,"[content ".$text_reply[1][$num]."]",$page['content']);}
@@ -38,7 +38,7 @@
 				$text = str_replace($text_reply[0][$num],libs::GetLib("templates_types")->GetContentByTag($tag),$text);
 			
                         if(libs::LoadLib("editors/visual")){$page['edit'] = libs::GetLib("editors/visual")->GetField("code",$page['content']);}
-                        else{$page['edit'] .= "Редактирование в визуальном редакторе не доступно, т.к. не удалось загрузить библиотеку 'editors/visual'<br/><textarea name='code'>".$page['content']."</textarea>";}
+                        else{$page['edit'] .= "Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РІ РІРёР·СѓР°Р»СЊРЅРѕРј СЂРµРґР°РєС‚РѕСЂРµ РЅРµ РґРѕСЃС‚СѓРїРЅРѕ, С‚.Рє. РЅРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ Р±РёР±Р»РёРѕС‚РµРєСѓ 'editors/visual'<br/><textarea name='code'>".$page['content']."</textarea>";}
 			
 			$content .= libs::GetLib("templates")->getRTmpl("admin/page_edit",$page);
 		
@@ -49,7 +49,7 @@
 			$page_arr = $db->getAllOnField("pages","id",$adm[4],"id",true);
 			$page = $page_arr[0];
 			$page['action'] = "%adress%/index.php/admin/pages/save/".$page['id'];$page['method'] = "post";
-			$content .= " | <a href='%adress%/index.php/admin/pages/'>К списку страниц</a>";
+			$content .= " | <a href='%adress%/index.php/admin/pages/'>Рљ СЃРїРёСЃРєСѓ СЃС‚СЂР°РЅРёС†</a>";
 			
 			preg_match_all("|<content (.*)/>|U", $page['content'], $text_reply, PREG_SPLIT_NO_EMPTY);
                         foreach($text_reply[0] as $num=>$tag){$page['content'] = str_replace($tag,"[content ".$text_reply[1][$num]."]",$page['content']);}
@@ -61,7 +61,7 @@
 				$text = str_replace($text_reply[0][$num],libs::GetLib("templates_types")->GetContentByTag($tag),$text);
 			
                         if(libs::LoadLib("editors/code")){$page['edit'] = libs::GetLib("editors/code")->GetField("code",$page['content']);}
-                        else{$page['edit'] .= "Редактирование в редакторе кода не доступно, т.к. не удалось загрузить библиотеку 'editors/code'<br/><textarea name='code'>".$page['content']."</textarea>";}
+                        else{$page['edit'] .= "Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РІ СЂРµРґР°РєС‚РѕСЂРµ РєРѕРґР° РЅРµ РґРѕСЃС‚СѓРїРЅРѕ, С‚.Рє. РЅРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ Р±РёР±Р»РёРѕС‚РµРєСѓ 'editors/code'<br/><textarea name='code'>".$page['content']."</textarea>";}
 			
 			$content .= libs::GetLib("templates")->getRTmpl("admin/page_edit",$page);
 		
@@ -80,14 +80,14 @@
 				$db->setField("pages", "alias", filter_input(INPUT_POST,'alias'), "id", $adm[4]);
 				$db->setField("pages","content",$code          , "id", $adm[4]);
 				
-				$content .= " | <a href='%adress%/index.php/admin/pages'>К списку страниц.</a>";
-				$content .= libs::GetLib("templates")->getRTmpl("success",array("message"=>"Страница '".filter_input(INPUT_POST,'title')."' успешно сохранена."));
+				$content .= " | <a href='%adress%/index.php/admin/pages'>Рљ СЃРїРёСЃРєСѓ СЃС‚СЂР°РЅРёС†.</a>";
+				$content .= libs::GetLib("templates")->getRTmpl("success",array("message"=>"РЎС‚СЂР°РЅРёС†Р° '".filter_input(INPUT_POST,'title')."' СѓСЃРїРµС€РЅРѕ СЃРѕС…СЂР°РЅРµРЅР°."));
 			}else{
 				$page = array("alias"=>filter_input(INPUT_POST,'alias'),"title"=>filter_input(INPUT_POST,'title'),"content"=>$code);
 				$db->insert("pages",$page);
 				
-				$content .= " | <a href='%adress%/index.php/admin/pages'>К списку страниц.</a>";
-				$content .= libs::GetLib("templates")->getRTmpl("success",array("message"=>"Страница '".filter_input(INPUT_POST,'title')."' успешно сохранена."));
+				$content .= " | <a href='%adress%/index.php/admin/pages'>Рљ СЃРїРёСЃРєСѓ СЃС‚СЂР°РЅРёС†.</a>";
+				$content .= libs::GetLib("templates")->getRTmpl("success",array("message"=>"РЎС‚СЂР°РЅРёС†Р° '".filter_input(INPUT_POST,'title')."' СѓСЃРїРµС€РЅРѕ СЃРѕС…СЂР°РЅРµРЅР°."));
 			
 			}
 			
@@ -99,21 +99,21 @@
 			if($ex){
 				$title = $db->GetField("pages","title","id",$adm[4]);
 				$db->DeleteOnID("pages",$adm[4]);
-				$content .= libs::GetLib("templates")->GetRTmpl("success",array("message"=>"Страница '$title' удалена."));
-                        }else{$content .= libs::GetLib("templates")->GetRTmpl("error",array("message"=>"Страница с таким id не найдена."));}
+				$content .= libs::GetLib("templates")->GetRTmpl("success",array("message"=>"РЎС‚СЂР°РЅРёС†Р° '$title' СѓРґР°Р»РµРЅР°."));
+                        }else{$content .= libs::GetLib("templates")->GetRTmpl("error",array("message"=>"РЎС‚СЂР°РЅРёС†Р° СЃ С‚Р°РєРёРј id РЅРµ РЅР°Р№РґРµРЅР°."));}
 			
 		break;
 		
 		case "add":
 		
-			$content .= " | <a href='%adress%/index.php/admin/pages'>К списку страниц.</a>";
+			$content .= " | <a href='%adress%/index.php/admin/pages'>Рљ СЃРїРёСЃРєСѓ СЃС‚СЂР°РЅРёС†.</a>";
 			
 			
 			$page = array("content"=>"","title"=>"","alias"=>"");
 			$page['action'] = "%adress%/index.php/admin/pages/save/".$page['id'];$page['method'] = "post";
 			
                         if(libs::LoadLib("editors/visual")){$page['edit'] = libs::GetLib("editors/visual")->GetField("code",$page['content']);}
-                        else{$page['edit'] .= "Редактирование в визуальном редакторе не доступно, т.к. не удалось загрузить библиотеку 'editors/visual'<br/><textarea name='code'>".$page['content']."</textarea>";}
+                        else{$page['edit'] .= "Р РµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ РІ РІРёР·СѓР°Р»СЊРЅРѕРј СЂРµРґР°РєС‚РѕСЂРµ РЅРµ РґРѕСЃС‚СѓРїРЅРѕ, С‚.Рє. РЅРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ Р±РёР±Р»РёРѕС‚РµРєСѓ 'editors/visual'<br/><textarea name='code'>".$page['content']."</textarea>";}
 			
 			$content .= libs::GetLib("templates")->getRTmpl("admin/page_edit",$page);
 			
@@ -122,7 +122,7 @@
 	
 		default:
 		
-			$content .= "<br/>Ошибка";
+			$content .= "<br/>РћС€РёР±РєР°";
 		
 		break;
 	

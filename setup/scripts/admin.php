@@ -1,5 +1,5 @@
 <?php
-	if($_POST['act'] != "site_activation") $content .= "<br/><br/><form method='post'>Регистрация главного администратора.<br/>Введите учетные данные главного администратора сайта.<input type='hidden' name='act' value='site_activation'/><br/>Логин: <input type='text' name='login'/><br/>Пароль: <input type='password' name='pass'/></br><input type='submit' value='' style='
+	if($_POST['act'] != "site_activation") $content .= "<br/><br/><form method='post'>Р РµРіРёСЃС‚СЂР°С†РёСЏ РіР»Р°РІРЅРѕРіРѕ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР°.<br/>Р’РІРµРґРёС‚Рµ СѓС‡РµС‚РЅС‹Рµ РґР°РЅРЅС‹Рµ РіР»Р°РІРЅРѕРіРѕ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР° СЃР°Р№С‚Р°.<input type='hidden' name='act' value='site_activation'/><br/>Р›РѕРіРёРЅ: <input type='text' name='login'/><br/>РџР°СЂРѕР»СЊ: <input type='password' name='pass'/></br><input type='submit' value='' style='
     text-decoration: none;
     background: url(%adress%/setup/tmpl/gotovo.png) no-repeat;
     height: 47px;
@@ -21,9 +21,9 @@
 				$db = new DataBase();
 				$db->insert("users",$usr);
 				
-				$_SESSION['userMessage'] = "Добро пожаловать,".$log_bl[1][0].".<br/>Установка CMS завершена, теперь вы можете работать с сайтом.<br/>Пожалуйста авторизируйтесь.";
+				$_SESSION['userMessage'] = "Р”РѕР±СЂРѕ РїРѕР¶Р°Р»РѕРІР°С‚СЊ,".$log_bl[1][0].".<br/>РЈСЃС‚Р°РЅРѕРІРєР° CMS Р·Р°РІРµСЂС€РµРЅР°, С‚РµРїРµСЂСЊ РІС‹ РјРѕР¶РµС‚Рµ СЂР°Р±РѕС‚Р°С‚СЊ СЃ СЃР°Р№С‚РѕРј.<br/>РџРѕР¶Р°Р»СѓР№СЃС‚Р° Р°РІС‚РѕСЂРёР·РёСЂСѓР№С‚РµСЃСЊ.";
 				$_SESSION['auth'] == "0";
-				$content .= "Установка MSC Web Site Engine завершена, осталось только нажать на кнопку \"Запустить сайт\" и можно начинать работу с сайтом.<br/><br/><form method='POST'><input type='hidden' name='act' value='setup_off'><input type='submit' value='Запустить сайт'></form>";
+				$content .= "РЈСЃС‚Р°РЅРѕРІРєР° MSC Web Site Engine Р·Р°РІРµСЂС€РµРЅР°, РѕСЃС‚Р°Р»РѕСЃСЊ С‚РѕР»СЊРєРѕ РЅР°Р¶Р°С‚СЊ РЅР° РєРЅРѕРїРєСѓ \"Р—Р°РїСѓСЃС‚РёС‚СЊ СЃР°Р№С‚\" Рё РјРѕР¶РЅРѕ РЅР°С‡РёРЅР°С‚СЊ СЂР°Р±РѕС‚Сѓ СЃ СЃР°Р№С‚РѕРј.<br/><br/><form method='POST'><input type='hidden' name='act' value='setup_off'><input type='submit' value='Р—Р°РїСѓСЃС‚РёС‚СЊ СЃР°Р№С‚'></form>";
 				next_stage();
 			
 			

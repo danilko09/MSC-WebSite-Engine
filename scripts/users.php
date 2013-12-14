@@ -7,11 +7,11 @@
 			if(libs::loadlib("users")){
 			
 				if(libs::getlib("users")->IsAuthorized() == "1"){
-					$return = "Вы уже авторизированны";	
-                                }elseif(libs::getlib("users")->TryRegister()=="ok"){$return = "Регистрация пройдена успешно.<br/><a href='%adress%'>Перейти на главную страницу сайта.</a>";}
+					$return = "Р’С‹ СѓР¶Рµ Р°РІС‚РѕСЂРёР·РёСЂРѕРІР°РЅРЅС‹";	
+                                }elseif(libs::getlib("users")->TryRegister()=="ok"){$return = "Р РµРіРёСЃС‚СЂР°С†РёСЏ РїСЂРѕР№РґРµРЅР° СѓСЃРїРµС€РЅРѕ.<br/><a href='%adress%'>РџРµСЂРµР№С‚Рё РЅР° РіР»Р°РІРЅСѓСЋ СЃС‚СЂР°РЅРёС†Сѓ СЃР°Р№С‚Р°.</a>";}
                                 else{$return = libs::getlib("users")->GetRegisterForm();}
 				
-                        }else{$return = libs::getlib("templates")->getRTmpl("error",array("message"=>"Не удалось загрузить библиотеку 'users'"));}
+                        }else{$return = libs::getlib("templates")->getRTmpl("error",array("message"=>"РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ Р±РёР±Р»РёРѕС‚РµРєСѓ 'users'"));}
 			
 			return $return;
 			
@@ -22,12 +22,12 @@
 			if(libs::loadlib("users")){
 			
 				if(libs::getlib("users")->IsAuthorized() == "1"){
-					$return = "Вы уже авторизированны";	
-				}elseif(libs::getlib("users")->TryLogin()){$return .= "Авторизация пройдена успешно | <a href='%adress%'>на сайт</a>";}
+					$return = "Р’С‹ СѓР¶Рµ Р°РІС‚РѕСЂРёР·РёСЂРѕРІР°РЅРЅС‹";	
+				}elseif(libs::getlib("users")->TryLogin()){$return .= "РђРІС‚РѕСЂРёР·Р°С†РёСЏ РїСЂРѕР№РґРµРЅР° СѓСЃРїРµС€РЅРѕ | <a href='%adress%'>РЅР° СЃР°Р№С‚</a>";}
                                 else{$return = libs::getlib("users")->GetLoginForm();}
 				
 				
-                        }else{$return = libs::getlib("templates")->getRTmpl("error",array("message"=>"Не удалось загрузить библиотеку 'users'"));}
+                        }else{$return = libs::getlib("templates")->getRTmpl("error",array("message"=>"РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ Р±РёР±Р»РёРѕС‚РµРєСѓ 'users'"));}
 			return $return;
 		
 		}
@@ -38,10 +38,10 @@
 			
 				if(libs::getlib("users")->IsAuthorized() == "1"){
 						libs::getlib("users")->logOut();
-						$return = "Пока :(<br/><a href='%adress%'>Перейти на главную страницу сайта.</a>";
-                                }else{$return = "перейдите на страницу авторизации для входа, на страницу регистрации для регистрации.";}
+						$return = "РџРѕРєР° :(<br/><a href='%adress%'>РџРµСЂРµР№С‚Рё РЅР° РіР»Р°РІРЅСѓСЋ СЃС‚СЂР°РЅРёС†Сѓ СЃР°Р№С‚Р°.</a>";
+                                }else{$return = "РїРµСЂРµР№РґРёС‚Рµ РЅР° СЃС‚СЂР°РЅРёС†Сѓ Р°РІС‚РѕСЂРёР·Р°С†РёРё РґР»СЏ РІС…РѕРґР°, РЅР° СЃС‚СЂР°РЅРёС†Сѓ СЂРµРіРёСЃС‚СЂР°С†РёРё РґР»СЏ СЂРµРіРёСЃС‚СЂР°С†РёРё.";}
 				
-                        }else{$return = libs::getlib("templates")->getRTmpl("error",array("message"=>"Не удалось загрузить библиотеку 'users'"));}
+                        }else{$return = libs::getlib("templates")->getRTmpl("error",array("message"=>"РќРµ СѓРґР°Р»РѕСЃСЊ Р·Р°РіСЂСѓР·РёС‚СЊ Р±РёР±Р»РёРѕС‚РµРєСѓ 'users'"));}
 			return $return;
 			
 		}

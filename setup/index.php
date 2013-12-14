@@ -1,19 +1,19 @@
 <?php
 	session_start();
-    if(filter_input(INPUT_GET,'restart') == 1){$_SESSION = null; echo "<h1><font color='red'>Установщик переключен на 1 шаг. Перейдите по адресу, куда вы устанавливаете CMS.</font></h1>";}
+    if(filter_input(INPUT_GET,'restart') == 1){$_SESSION = null; echo "<h1><font color='red'>РЈСЃС‚Р°РЅРѕРІС‰РёРє РїРµСЂРµРєР»СЋС‡РµРЅ РЅР° 1 С€Р°Рі. РџРµСЂРµР№РґРёС‚Рµ РїРѕ Р°РґСЂРµСЃСѓ, РєСѓРґР° РІС‹ СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚Рµ CMS.</font></h1>";}
 	
 	$finish = false;
 	include("config.php");
 	
 	
-	//Подключение скриптов из очереди
+	//РџРѕРґРєР»СЋС‡РµРЅРёРµ СЃРєСЂРёРїС‚РѕРІ РёР· РѕС‡РµСЂРµРґРё
 	
     if($_SESSION['pos'] === "" || $_SESSION['pos'] === null){$_SESSION['pos'] = 0;}
 	
 	if($scripts[$_SESSION['pos']]!=null)include("scripts/".$scripts[$_SESSION['pos']].".php");
-    else{$content = "Во время установки возникла ошибка.<br/>Пожалуйста, свяжитесь с разработчиком проекта и сообщите об этом.";}
+    else{$content = "Р’Рѕ РІСЂРµРјСЏ СѓСЃС‚Р°РЅРѕРІРєРё РІРѕР·РЅРёРєР»Р° РѕС€РёР±РєР°.<br/>РџРѕР¶Р°Р»СѓР№СЃС‚Р°, СЃРІСЏР¶РёС‚РµСЃСЊ СЃ СЂР°Р·СЂР°Р±РѕС‚С‡РёРєРѕРј РїСЂРѕРµРєС‚Р° Рё СЃРѕРѕР±С‰РёС‚Рµ РѕР± СЌС‚РѕРј.";}
 	
-	//Подгрузка шаблона
+	//РџРѕРґРіСЂСѓР·РєР° С€Р°Р±Р»РѕРЅР°
         
     $ech = filter_input(INPUT_SERVER,'HTTP_ORIGIN').filter_input(INPUT_SERVER,'REQUEST_URI');
 	$ech = str_replace("/setup/", "", $ech);
@@ -22,7 +22,7 @@
 	echo $site;
     if($finish){RemoveDir("../setup");}
 	
-	//Вспомогательные функции
+	//Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Рµ С„СѓРЅРєС†РёРё
 	
 	function next_stage(){
 	
@@ -50,12 +50,12 @@
 				if ($file!='.' && $file!='..'){
 					$tmpPath=$path.'/'.$file;chmod($tmpPath, 0777);
 					
-                                        if (is_dir($tmpPath)){RemoveDir($tmpPath);}// если папка 
-					else{if(file_exists($tmpPath)){unlink($tmpPath);}/*удаляем файл*/}
+                                        if (is_dir($tmpPath)){RemoveDir($tmpPath);}// РµСЃР»Рё РїР°РїРєР° 
+					else{if(file_exists($tmpPath)){unlink($tmpPath);}/*СѓРґР°Р»СЏРµРј С„Р°Р№Р»*/}
 				}
 			}closedir($dirHandle);
 			
-			// удаляем текущую папку
+			// СѓРґР°Р»СЏРµРј С‚РµРєСѓС‰СѓСЋ РїР°РїРєСѓ
 			if(file_exists($path)){rmdir($path);}
 		}
 	}

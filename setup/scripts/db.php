@@ -2,11 +2,11 @@
 
 // `admin`
 $admin = array(
-  array('id' => '1','alias' => 'blocks','title' => 'Менеджер блоков','group' => 'Основные'),
-  array('id' => '2','alias' => 'scripts','title' => 'Менеджер скриптов','group' => 'Основные'),
-  array('id' => '3','alias' => 'pages','title' => 'Менеджер страниц','group' => 'Основные'),
-  array('id' => '4','alias' => 'menus','title' => 'Менеджер меню','group' => 'Основные'),
-  array('id' => '5','alias' => 'about','title' => 'О системе','group' => 'Основные')
+  array('id' => '1','alias' => 'blocks','title' => 'РњРµРЅРµРґР¶РµСЂ Р±Р»РѕРєРѕРІ','group' => 'РћСЃРЅРѕРІРЅС‹Рµ'),
+  array('id' => '2','alias' => 'scripts','title' => 'РњРµРЅРµРґР¶РµСЂ СЃРєСЂРёРїС‚РѕРІ','group' => 'РћСЃРЅРѕРІРЅС‹Рµ'),
+  array('id' => '3','alias' => 'pages','title' => 'РњРµРЅРµРґР¶РµСЂ СЃС‚СЂР°РЅРёС†','group' => 'РћСЃРЅРѕРІРЅС‹Рµ'),
+  array('id' => '4','alias' => 'menus','title' => 'РњРµРЅРµРґР¶РµСЂ РјРµРЅСЋ','group' => 'РћСЃРЅРѕРІРЅС‹Рµ'),
+  array('id' => '5','alias' => 'about','title' => 'Рћ СЃРёСЃС‚РµРјРµ','group' => 'РћСЃРЅРѕРІРЅС‹Рµ')
 );
 
 // `lib`
@@ -16,24 +16,24 @@ $lib = array(
 
 // `menus`
 $menus = array(
-  array('id' => '1','alias' => 'main','title' => 'Главное меню','links' => 'На главную|%adress%/index.php/|all,Админка|%adress%/index.php/admin|all')
+  array('id' => '1','alias' => 'main','title' => 'Р“Р»Р°РІРЅРѕРµ РјРµРЅСЋ','links' => 'РќР° РіР»Р°РІРЅСѓСЋ|%adress%/index.php/|all,РђРґРјРёРЅРєР°|%adress%/index.php/admin|all')
 );
 
 $pages = array(
-  array('id' => '1','alias' => 'home','title' => 'Добро пожаловать','content' => '<p>Установка CMS "MSC: WebSite Engine A.2.0 Preview 2" успешно завершена !</p>
-<p>Это главная страница сайта, для её редактирования вам нужно использовать менеджер страниц в административной панели.</p>
+  array('id' => '1','alias' => 'home','title' => 'Р”РѕР±СЂРѕ РїРѕР¶Р°Р»РѕРІР°С‚СЊ','content' => '<p>РЈСЃС‚Р°РЅРѕРІРєР° CMS "MSC: WebSite Engine A.2.0 Preview 2" СѓСЃРїРµС€РЅРѕ Р·Р°РІРµСЂС€РµРЅР° !</p>
+<p>Р­С‚Рѕ РіР»Р°РІРЅР°СЏ СЃС‚СЂР°РЅРёС†Р° СЃР°Р№С‚Р°, РґР»СЏ РµС‘ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ РІР°Рј РЅСѓР¶РЅРѕ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РјРµРЅРµРґР¶РµСЂ СЃС‚СЂР°РЅРёС† РІ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РёРІРЅРѕР№ РїР°РЅРµР»Рё.</p>
 <p>&nbsp;</p>
-<p>Главное меню сайта:</p>
+<p>Р“Р»Р°РІРЅРѕРµ РјРµРЅСЋ СЃР°Р№С‚Р°:</p>
 <p><content type=\'menu\' name=\'main\'/></p>
 <p>&nbsp;</p>'),
-  array('id' => '2','alias' => 'registration','title' => 'Регистрация','content' => '<p><content type=\'script\' name=\'auth\' action=\'GetRegister\'/></p>'),
-  array('id' => '3','alias' => 'auth','title' => 'Авторизация','content' => '<p><content type=\'script\' name=\'auth\' action=\'GetAuth\'/></p>'),
-  array('id' => '4','alias' => 'logout','title' => 'Выйти','content' => '<p><content type=\'script\' name=\'auth\' action=\'DoLogout\'/></p>'),
+  array('id' => '2','alias' => 'registration','title' => 'Р РµРіРёСЃС‚СЂР°С†РёСЏ','content' => '<p><content type=\'script\' name=\'auth\' action=\'GetRegister\'/></p>'),
+  array('id' => '3','alias' => 'auth','title' => 'РђРІС‚РѕСЂРёР·Р°С†РёСЏ','content' => '<p><content type=\'script\' name=\'auth\' action=\'GetAuth\'/></p>'),
+  array('id' => '4','alias' => 'logout','title' => 'Р’С‹Р№С‚Рё','content' => '<p><content type=\'script\' name=\'auth\' action=\'DoLogout\'/></p>'),
   );
 
 // `scripts`
 $scripts = array(
-  array('id' => '1','title' => 'авторизация\\регистрация','alias' => 'auth','file' => 'users'),
+  array('id' => '1','title' => 'Р°РІС‚РѕСЂРёР·Р°С†РёСЏ\\СЂРµРіРёСЃС‚СЂР°С†РёСЏ','alias' => 'auth','file' => 'users'),
   );
 
 // `server`

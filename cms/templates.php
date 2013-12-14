@@ -1,17 +1,17 @@
 <?php
-//Получение алиаса страницы
+//РџРѕР»СѓС‡РµРЅРёРµ Р°Р»РёР°СЃР° СЃС‚СЂР°РЅРёС†С‹
     $self = "http://".filter_input(INPUT_SERVER,'SERVER_NAME').filter_input(INPUT_SERVER,'PHP_SELF');
     if($ajax != true){$self = str_replace(config::site_url."/index.php","",$self);}
     else{$self = str_replace(config::site_url."/ajax.php","",$self);}
-//Проверка на системную страницу (админка или домашняя)
+//РџСЂРѕРІРµСЂРєР° РЅР° СЃРёСЃС‚РµРјРЅСѓСЋ СЃС‚СЂР°РЅРёС†Сѓ (Р°РґРјРёРЅРєР° РёР»Рё РґРѕРјР°С€РЅСЏСЏ)
     $adm = explode("/", $self);
     if($self == "" || $self == "/"){$page = "home";}
     elseif($adm[1] == "admin"){$page = "admin";}
     else{$page = "no_sys";}
-//Установка шаблона из массива $_GET
+//РЈСЃС‚Р°РЅРѕРІРєР° С€Р°Р±Р»РѕРЅР° РёР· РјР°СЃСЃРёРІР° $_GET
     if(filter_input(INPUT_GET,'tmpl') != ""){libs::GetLib("templates")->template_name = filter_input(INPUT_GET,'tmpl');}
     else{libs::GetLib("templates")->template_name = "default";}
-//Обработка системной страницы
+//РћР±СЂР°Р±РѕС‚РєР° СЃРёСЃС‚РµРјРЅРѕР№ СЃС‚СЂР°РЅРёС†С‹
     if($page == "home"){
 
             $content_db = libs::GetLib("database")->getAllOnField("pages","alias","home","id", true);
@@ -29,8 +29,8 @@
 
             if($cur_page == ""){
 
-                    $content_db[0]['title'] = "Возникла ошибка";
-                    $content = "Страница по адресу \"%adress%$self\" не найднеа.<br/><br/>Код ошибки: 404.";
+                    $content_db[0]['title'] = "Р’РѕР·РЅРёРєР»Р° РѕС€РёР±РєР°";
+                    $content = "РЎС‚СЂР°РЅРёС†Р° РїРѕ Р°РґСЂРµСЃСѓ \"%adress%$self\" РЅРµ РЅР°Р№РґРЅРµР°.<br/><br/>РљРѕРґ РѕС€РёР±РєРё: 404.";
 
             }else{
 
