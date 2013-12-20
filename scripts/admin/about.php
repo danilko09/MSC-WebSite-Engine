@@ -1,5 +1,8 @@
 <?php
 
+// Скрипт "о системе" для админки
+// Выводит некоторую инфу по сборке(версия ядра, что установлено и др.)
+
 	$sc = libs::GetLib("database")->getAll("scripts","id",true);
 	foreach($sc as $num=>$script){
 	

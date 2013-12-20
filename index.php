@@ -1,5 +1,5 @@
 <?php session_start();
-//Запуск установщика
+//Запуск установщика если такой есть
     if(is_dir('setup') && is_file('setup/index.php')){header('Location: setup');}
 //Проверка существования папки CMS	
     if(!is_dir("cms")){die("Отсутствует директория 'CMS'.");}

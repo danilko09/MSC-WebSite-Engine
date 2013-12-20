@@ -1,9 +1,15 @@
 <?php
+
+// Управляющий кусочек шаблонизатора
+// В разработке. Выбор шаблона будет позже. пока можно потестить с GET запросом.
+// На основе URL подбирает контент страницы и выдает его в шаблоне (точнее дергает за ниточки шаблонизатор, чтоб тот это сделал)
+
+
 //Получение алиаса страницы
     $self = "http://".filter_input(INPUT_SERVER,'SERVER_NAME').filter_input(INPUT_SERVER,'PHP_SELF');
     if($ajax != true){$self = str_replace(config::site_url."/index.php","",$self);}
     else{$self = str_replace(config::site_url."/ajax.php","",$self);}
-//Проверка на системную страницу (админка или домашняя)
+//Проверка на системную страницу (административная или обычная)
     $adm = explode("/", $self);
     if($self == "" || $self == "/"){$page = "home";}
     elseif($adm[1] == "admin"){$page = "admin";}

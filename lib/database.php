@@ -1,5 +1,10 @@
 <?php
 
+// Библиотека database
+// Используется в CMS почти везде
+// Ну если не понятно для чего, то подсказака - работает с БД MySql
+// Используется MySqli (см. __construct)
+
 class DataBase{
 	private $mysqli;
 	

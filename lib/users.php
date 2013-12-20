@@ -1,5 +1,8 @@
 <?php
 
+// Библиотека users
+// Авторизация\регистрация пользователей, контроль групп и тд.
+
 class users{
 
 	public function IsAuthorized(){
