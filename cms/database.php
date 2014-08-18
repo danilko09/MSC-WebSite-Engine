@@ -26,7 +26,7 @@ final class DataBase {
             if((strpos($fields[$i], "(") === false) && ($fields[$i] != "*" )){$fields[$i] = "`".$fields[$i]."`";}
         }
         $fields = implode(",", $fields);
-        $table_name = config::db_pref.$table_name;
+        $table_name = registry::get("cms.db.pref").$table_name;
         if(!$order){$order = "ORDER BY `id`";}
         else{
             if($order != "RAND()"){
@@ -45,7 +45,7 @@ final class DataBase {
     }
 
     public static function insert($table_name, $new_values){
-        $table_name = config::db_pref.$table_name;
+        $table_name = registry::get("cms.db.pref").$table_name;
         $fields = ""; $values = "";
         foreach($new_values as $field=> $value){$fields .= "`".$field."`,";}
         foreach($new_values as $value){$values .= "'".addslashes($value)."',";}
@@ -53,7 +53,7 @@ final class DataBase {
     }
 
     private static function update($table_name, $upd_fields, $where){
-        $table_name = config::db_pref.$table_name;
+        $table_name = registry::get("cms.db.pref").$table_name;
         $query = "";
         foreach($upd_fields as $field=> $value){$query .= "`$field` = '".addslashes($value)."',";}
         if($where){
@@ -63,7 +63,7 @@ final class DataBase {
 
     /* public static function delete($table_name, $where = "")
       {
-      $table_name = config::db_pref.$table_name;
+      $table_name = registry::get("cms.db.pref").$table_name;
       if($where)
       {
       $query = "DELETE FROM $table_name WHERE $where";
@@ -74,7 +74,7 @@ final class DataBase {
 
       public static function deleteAll($table_name)
       {
-      $table_name = config::db_pref.$table_name;
+      $table_name = registry::get("cms.db.pref").$table_name;
       $query = "TRUNCATE TABLE `$table_name`";
       return self::query($query);
       } */
@@ -199,7 +199,7 @@ final class DataBase {
     }
 
     public static function disconnect(){
-        if(self::mysqli){self::$mysqli->close();}
+        if(self::$mysqli){self::$mysqli->close();}
     }
 
     private static function validID($id){

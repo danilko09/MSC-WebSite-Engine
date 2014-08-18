@@ -16,7 +16,7 @@
 		[blocks_logo]
 	</div>
 	<div id="menu">
-	[menus_main]
+	menus_main
 	</div>
 </div>
 <!-- start page -->
@@ -36,4 +36,3 @@
 		%sidebar_r%
 	</div>
 	<!-- end sidebar2 -->
-	<div style="clear: both;">

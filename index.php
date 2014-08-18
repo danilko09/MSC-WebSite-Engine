@@ -46,7 +46,8 @@ final class cms{
 
 	private function detect_page_module(){
 		$URI = $this->detect_page_uri();
-		$this->module['name'] = config::def_module;//old
+                registry::set("cms.def_module",config::def_module);
+		$this->module['name'] = registry::get("cms.def_module");
 		if($URI != "/"){
 			$parts = explode("/",ltrim($URI," /"));
 			foreach($parts as $num=>$val){
@@ -78,23 +79,9 @@ final class cms{
 	public function start(){
 		
             $page = file_get_contents("tmpl/".config::def_template."/main.tpl");//old
-
-//on page blocks
-	$blocks = DataBase::getAll("blocks", false, false);
-	$f = DataBase::getLastId("blocks");
-	$blocks['r'] = "";$blocks['l'] = "";
-	for($i = 0; $i < $f; $i++){
-	if(!isset($blocks[$i])){continue;}
-        if($blocks[$i]['pos'] === "r"){$blocks['r'] .= "<li><h2>".$blocks[$i]['title']."</h2><div>".$blocks[$i]['content']."</div></li>";}
-        elseif($blocks[$i]['pos'] === "l"){$blocks['l'] .= "<li id=\"".$blocks[$i]['css_id']."\"><h2>".$blocks[$i]['title']."</h2><div>".$blocks[$i]['content']."</div></li>";}
-	}
-//sidebars with blocks
-	$page = str_replace("%sidebar_l%","<ul>".$blocks['l']."</ul>",$page);
-	$page = str_replace("%sidebar_r%","<ul>".$blocks['r']."</ul>",$page);
-
-		$page = templates::addScripts($page,$this->page_data,"main.tpl");	
-		$page = str_replace("%adress%", config::site_url, $page);		
-		echo $page;
+            $page = templates::addScripts($page,$this->page_data,"main.tpl");	
+            $page = str_replace("%adress%", config::site_url, $page);		
+            echo $page;
 	}
 //start ]
 

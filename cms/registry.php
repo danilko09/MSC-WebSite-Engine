@@ -27,6 +27,10 @@ final class registry{
         
     }
     
+    public static function isSetKey($key){
+        return is_file(__DIR__."/registry/".str_replace(".","/",$key)."/index");
+    }
+    
     private static function make_writable($key){
         
         $arr = explode(".",$key.".");
