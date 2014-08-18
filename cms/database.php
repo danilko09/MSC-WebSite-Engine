@@ -4,8 +4,13 @@ final class DataBase {
 
     private static $mysqli = null;
 
-    public static function connect(){
-        self::$mysqli = new mysqli(config::db_host, config::db_user,config::db_pass, config::db_name);
+    public static function connect(){    
+        self::$mysqli = new mysqli(
+                registry::get("cms.db.host"),
+                registry::get("cms.db.user"),
+                registry::get("cms.db.pass"),
+                registry::get("cms.db.name")
+                );
         self::$mysqli->query("SET NAMES 'utf8'");
     }
 

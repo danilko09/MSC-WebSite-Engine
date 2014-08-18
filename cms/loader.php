@@ -1,18 +1,9 @@
 <?php
-
-	$db = new DataBase();
 	$templates = new templates();
-	include("lib.php");
+        
+	if(!is_dir("scripts")) debug("<font color='red'>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ 'scripts' пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.</font>");
+	if(!is_dir("tmpl")) debug("<font color='red'>пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ 'tmpl' пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.</font>");
 
-	$debug = "";
-	if(!is_dir("scripts")) debug("<font color='red'>Создайте папку 'scripts' в корневой папке сайта.</font>");
-	if(!is_dir("tmpl")) debug("<font color='red'>Создайте папку 'tmpl' в корневой папке сайта.</font>");
-	
-	function debug($content){
-		global $debug;
-		if(config::debug){$debug .= "<br/>".$content."<br/>\r\n";}
-	}
-	
-	
+        function debug(){}
 	
 ?>

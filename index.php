@@ -5,7 +5,7 @@ $ms = microtime(true);
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 //version
-define("CMS_VERSION","A.2.0");
+define("CMS_VERSION","A.3.0");
 //config (old | config->registry)
 if(is_file("cms/config.php")){include("cms/config.php");}
 elseif(is_file("config.php")){include("config.php");}
@@ -36,11 +36,12 @@ final class cms{
 	}
 //init [
 	private function load_system_components(){
-		require_once("cms/database.php");
-                DataBase::connect();
-		require_once("cms/templates.php");
-		require_once("cms/loader.php");
-		require_once("cms/modules.php");
+            require_once("cms/registry.php");
+            require_once("cms/database.php");
+            DataBase::connect();
+            require_once("cms/templates.php");
+            require_once("cms/loader.php");
+            require_once("cms/modules.php");
 	}
 
 	private function detect_page_module(){
@@ -75,12 +76,12 @@ final class cms{
 
 //start [
 	public function start(){
-global $db;//old
-		$page = file_get_contents("tmpl/".config::def_template."/main.tpl");//old
+		
+            $page = file_get_contents("tmpl/".config::def_template."/main.tpl");//old
 
 //on page blocks
-	$blocks = $db->getAll("blocks", false, false);
-	$f = $db->getLastId("blocks");
+	$blocks = DataBase::getAll("blocks", false, false);
+	$f = DataBase::getLastId("blocks");
 	$blocks['r'] = "";$blocks['l'] = "";
 	for($i = 0; $i < $f; $i++){
 	if(!isset($blocks[$i])){continue;}
