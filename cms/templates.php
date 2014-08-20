@@ -1,53 +1,50 @@
 <?php
 
-// Управляющий кусочек шаблонизатора
-// В разработке. Выбор шаблона будет позже. пока можно потестить с GET запросом.
-// На основе URL подбирает контент страницы и выдает его в шаблоне (точнее дергает за ниточки шаблонизатор, чтоб тот это сделал)
+class templates{
+	
+		public static function insertion($m,$i){
+			$f = "module_".$m;
+			if(class_exists($f)){
+				echo $f::processInsertion($i);
+			}else{
+				echo "<!-- can`t show insertion '".$m."_".$i."' -->";
+			}
+		}
 
+		public static function getTmpl($file, $reply){
+		
+			if(is_file("tmpl/custom/".$file.".html")){
+				$tmpl = file_get_contents("tmpl/custom/".$file.".html");
+				foreach($reply as $pr => $vl){
+				
+					$tmpl = str_replace("%$pr%", $vl, $tmpl);
+				
+				}
+			}else debug("���� ������� '$file.html' �� ������.");
+			
+			return $tmpl;
+		
+		}
+		
+		public static function addScripts($where,$vars = array(),$mark = "undefined"){
+		
+			$microtime = microtime(true);
+			if(count($vars > 0)){
+				foreach($vars as $var=>$val){$$var = $val;}
+			}
 
-//Получение алиаса страницы
-    $self = "http://".filter_input(INPUT_SERVER,'SERVER_NAME').filter_input(INPUT_SERVER,'PHP_SELF');
-    if($ajax != true){$self = str_replace(config::site_url."/index.php","",$self);}
-    else{$self = str_replace(config::site_url."/ajax.php","",$self);}
-//Проверка на системную страницу (административная или обычная)
-    $adm = explode("/", $self);
-    if($self == "" || $self == "/"){$page = "home";}
-    elseif($adm[1] == "admin"){$page = "admin";}
-    else{$page = "no_sys";}
-//Установка шаблона из массива $_GET
-    if(filter_input(INPUT_GET,'tmpl') != ""){libs::GetLib("templates")->template_name = filter_input(INPUT_GET,'tmpl');}
-    else{libs::GetLib("templates")->template_name = "default";}
-//Обработка системной страницы
-    if($page == "home"){
-
-            $content_db = libs::GetLib("database")->getAllOnField("pages","alias","home","id", true);
-            $content = $content_db[0]['content'];
-
-    }elseif($page == "admin"){
-            libs::GetLib("templates")->parse_content='0';
-            require_once("cms/admin.php");
-    }else{
-
-            $cur_page = "";
-            $pages = libs::GetLib("database")->getAll("pages","id", true);
-
-            foreach($pages as $num=>$page){if("/".$page['alias'] == $self){$cur_page = $page;}}
-
-            if($cur_page == ""){
-
-                    $content_db[0]['title'] = "Возникла ошибка";
-                    $content = "Страница по адресу \"%adress%$self\" не найднеа.<br/><br/>Код ошибки: 404.";
-
-            }else{
-
-                    $content_db[0]['title'] = $cur_page['title'];
-                    $content = $cur_page['content'];
-
-            }
-
-    }
-
-    libs::GetLib("templates_types")->setPageVar("page_title",$content_db[0]['title']);
-    libs::GetLib("templates")->SiteOut($content);
-
-?>
+			$compiled = preg_replace("/\[(.*)_(.*)\]/U","<?php templates::insertion('$1','$2'); ?>",$where);
+			ob_start();
+			if(@eval("?>".$compiled."<?php return true;")){
+				ob_clean();
+				eval("?>".$compiled);
+				$ret = ob_get_clean();
+				ob_end_clean();
+				return "\r\n<!--tmpl mark: ".$mark." | vars count: ".count($vars)." | OK | START -->\r\n".$ret."\r\n<!--tmpl mark: ".$mark." | OK | END | time: ".round((microtime(true)-$microtime) * 1000, 2)."ms -->\r\n";
+			}else{
+				ob_end_clean();
+				return "<!--tmpl mark: ".$mark." | compilation error -->";			
+			}
+		}
+	
+	}
