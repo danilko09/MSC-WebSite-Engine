@@ -1,0 +1,18 @@
+Привет, [username]!  <br/>
+<script>
+    function hideall(){
+        document.getElementById('skins_page').style.display = 'none';
+        document.getElementById('news_page').style.display = 'none';
+    }
+</script>
+<input type='hidden' name='login' value='[username]'/>
+<a href='#' onclick='playGame()'>Играть!</a>
+<br/>
+<div id="skins_page">
+    <content type='script' name='skins' action='getSkinsPage'/>
+</div>
+<div id="news_page" style="display: none;">
+    <content type='script' name='news' action='getNewsBlock'/>
+</div>
+<br/>
+<a href="#" onclick="hideall(); document.getElementById('skins_page').style.display = 'block';">Личный кабинет</a> <a href="#" onclick="hideall(); document.getElementById('news_page').style.display = 'block';">Новости</a>

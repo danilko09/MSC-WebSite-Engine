@@ -1,9 +1,9 @@
 <?php
 	//print_r($_POST);
 	//print_r($_SESSION);
-	if($_SESSION['db']['act'] == null){
+	if(!isset($_SESSION['db']['act']) || $_SESSION['db']['act'] == null){
 	
-		if($_POST['db_server'] == ""){
+		if(!isset($_POST['db_server']) || $_POST['db_server'] == ""){
 		$tmpl = getTmpl("db_param");
 		$content .= $tmpl;	
 		}else{
@@ -13,12 +13,12 @@
 			
 			if(!mysql_connect($_POST['db_server'], $_POST['db_user'], $_POST['db_pass']) || !mysql_select_db($_POST['db_name'])){
 			
-				$content .= "РџСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР°: ".mysql_error();
-				$content .= "<h2>РљРѕРЅС„РёРіСѓСЂРёСЂРѕРІР°РЅРёРµ Р‘Р”</h2><br/><form method='POST'>РЎРµСЂРІРµСЂ Р±Р°Р· РґР°РЅРЅС‹С…: <input type='text'name='db_server'/><br/>РРјСЏ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏ: <input type='text' name='db_user'/><br/>РџР°СЂРѕР»СЊ: <input type='password' name='db_pass'/><br/>Р‘Р°Р·Р° РґР°РЅРЅС‹С…: <input type='text' name='db_name'/><br/>РџСЂРµС„РёРєСЃ С‚Р°Р±Р»РёС†: <input type='text' name='db_prefix'/><br/><h3>РќР°СЃС‚СЂРѕР№РєРё СЃР°Р№С‚Р°</h3>РќР°Р·РІР°РЅРёРµ СЃР°Р№С‚Р°: <input type='text' name='site_name'/><br/><br/><input type='submit' value='РџСЂРѕРґРѕР»Р¶РёС‚СЊ'/><input type='hidden' name='act' value='db_conf'/></form>";
+				$content .= "Произошла ошибка: ".mysql_error();
+				$content .= "<h2>Конфигурирование БД</h2><br/><form method='POST'>Сервер баз данных: <input type='text'name='db_server'/><br/>Имя пользователя: <input type='text' name='db_user'/><br/>Пароль: <input type='password' name='db_pass'/><br/>База данных: <input type='text' name='db_name'/><br/>Префикс таблиц: <input type='text' name='db_prefix'/><br/><h3>Настройки сайта</h3>Название сайта: <input type='text' name='site_name'/><br/><br/><input type='submit' value='Продолжить'/><input type='hidden' name='act' value='db_conf'/></form>";
 			
 			}else{
-				if(is_dir("../cms") && is_file("../config.php")){
-				$conf = file_get_contents("../config.php");
+				if(is_dir("../cms") && is_file("../cms/config.php")){
+				$conf = file_get_contents("../cms/config.php");
 				$conf = "<?php
 
 class Config{
@@ -29,20 +29,21 @@ class Config{
 	const db_pass = \"".$_POST['db_pass']."\";
 	const db_name = \"".$_POST['db_name']."\";
 	const site_url = \"".$ech."\";
+	const debug = true;
 	const site_name = \"".$_POST['site_name']."\";
 
 }
 
 ?>";
-				$file = fopen("../config.php", "w");
+				$file = fopen("../cms/config.php", "w");
 				fwrite($file, $conf);
 				fclose($file);
-				//$content .= "РҐРѕС‚РёС‚Рµ РїРµСЂРµР·Р°РїРёСЃР°С‚СЊ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёРµ С‚Р°Р±Р»РёС†С‹?<br/><br/><form method='POST'><input type='hidden' name='act' value='db_import' /><input type='submit' name='yes' value='Р”Р°'/><input type='submit' name='no' value='РќРµС‚, РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёРµ'></form><br/><br/><font color='red'>Р’РЅРёРјР°РЅРёРµ!</font> РџСЂРё РІРєР»СЋС‡РµРЅРёРё Р·Р°РјРµРЅС‹ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёС… С‚Р°Р±Р»РёС† РјРѕРіСѓС‚ Р±С‹С‚СЊ РїРѕС‚РµСЂСЏРЅС‹ РЅРµРєРѕС‚РѕСЂС‹Рµ РґР°РЅРЅС‹Рµ, РЅР°РїСЂРёРјРµСЂ, РјРѕР¶РµС‚ РѕС‡РёСЃС‚РёС‚СЊСЃСЏ С‚Р°Р±Р»РёС†Р° СЃ РґР°РЅРЅС‹РјРё Рѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏС…. РќРѕ CMS РјРѕР¶РµС‚ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°С‚СЊ С‚РµРєСѓС‰РёРµ С‚Р°Р±Р»РёС†С‹, РїРѕСЌС‚РѕРјСѓ СЂРµРєРѕРјРµРЅРґСѓРµС‚СЃСЏ СЃРґРµР»Р°С‚СЊ СЂРµР·РµСЂРІРЅСѓСЋ РєРѕРїРёСЋ Рё РІРєР»СЋС‡РёС‚СЊ Р·Р°РјРµРЅСѓ, Р° Р·Р°С‚РµРј РІРѕСЃСЃС‚Р°РЅРѕРІРёС‚СЊ СЂРµР·РµСЂРІРЅСѓСЋ РєРѕРїРёСЋ.<br/><br/>Р•СЃР»Рё Р±Р°Р·Р° РґР°РЅРЅС‹С… РїСѓСЃС‚Р° РёР»Рё CMS СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚СЃСЏ РІ РїРµСЂРІС‹Р№ СЂР°Р·, С‚Рѕ РЅРµРѕР±С…РѕРґРёРјРѕ РІРєР»СЋС‡РёС‚СЊ Р·Р°РјРµРЅСѓ С‚Р°Р±Р»РёС†, С‡С‚РѕР±С‹ CMS РёРјРїРѕСЂС‚РёСЂРѕРІР°Р»Р° СЃРІРѕРё РЅР°СЃС‚СЂРѕР№РєРё РІ Р±Р°Р·Сѓ РґР°РЅРЅС‹С….<br/><br/><font color='red'>РџСЂРёРјРµС‡Р°РЅРёРµ.</font> CMS Р·Р°РјРµРЅРёС‚ С‚РѕР»СЊРєРѕ РЅРµРѕР±С…РѕРґРёРјС‹Рµ РґР»СЏ РµС‘ СЂР°Р±РѕС‚С‹ С‚Р°Р±Р»РёС†С‹.";
+				//$content .= "Хотите перезаписать существующие таблицы?<br/><br/><form method='POST'><input type='hidden' name='act' value='db_import' /><input type='submit' name='yes' value='Да'/><input type='submit' name='no' value='Нет, использовать существующие'></form><br/><br/><font color='red'>Внимание!</font> При включении замены существующих таблиц могут быть потеряны некоторые данные, например, может очиститься таблица с данными о пользователях. Но CMS может не поддерживать текущие таблицы, поэтому рекомендуется сделать резервную копию и включить замену, а затем восстановить резервную копию.<br/><br/>Если база данных пуста или CMS устанавливается в первый раз, то необходимо включить замену таблиц, чтобы CMS импортировала свои настройки в базу данных.<br/><br/><font color='red'>Примечание.</font> CMS заменит только необходимые для её работы таблицы.";
 				$_SESSION['db']['act'] = "import";
 				$ech = $_SERVER['HTTP_ORIGIN'].$_SERVER['REQUEST_URI'];
 				$ech = str_replace("/setup/", "", $ech);
 				header("Location: $ech/setup");
-				}else $content .= "РќРµ СЃСѓС‰РµСЃС‚РІСѓРµС‚ РїР°РїРєР° 'CMS' РІ РєРѕСЂРЅРµРІРѕР№ РїР°РїРєРµ СЃР°Р№С‚Р° РёР»Рё С„Р°Р№Р» 'config.php'.<br/><br/>Р—Р°РіСЂСѓР·РёС‚Рµ РЅР° СЃРµСЂРІРµСЂ СЃР°Р№С‚Р° РґСЂСѓРіСѓСЋ РєРѕРїРёСЋ MSC Web Site Engine Рё РѕР±РЅРѕРІРёС‚Рµ СЃС‚СЂР°РЅРёС†Сѓ";
+				}else $content .= "Не существует папка 'CMS' в корневой папке сайта или файл 'config.php' в этой папке.<br/><br/>Загрузите на сервер сайта другую копию MSC Web Site Engine и обновите страницу";
 				
 			}
 				
@@ -50,12 +51,12 @@ class Config{
 		
 	}else{
 	
-		if($_POST['act'] != "db_import"){
-		$content .= "РҐРѕС‚РёС‚Рµ РїРµСЂРµР·Р°РїРёСЃР°С‚СЊ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёРµ С‚Р°Р±Р»РёС†С‹?<br/><br/><form method='POST'><input type='hidden' name='act' value='db_import' /><input type='submit' name='yes' value=' ' style='text-decoration: none; background: url(%adress%/setup/tmpl/da.png) no-repeat; height: 47px; width: 150px; border: 0;'/><input type='submit' name='no' value=' ' style='    text-decoration: none;   background: url(%adress%/setup/tmpl/no.png) no-repeat;    height: 47px;    width: 150px;   border: 0;'></form><br/><br/><font color='red'>Р’РЅРёРјР°РЅРёРµ!</font> РџСЂРё РІРєР»СЋС‡РµРЅРёРё Р·Р°РјРµРЅС‹ СЃСѓС‰РµСЃС‚РІСѓСЋС‰РёС… С‚Р°Р±Р»РёС† РјРѕРіСѓС‚ Р±С‹С‚СЊ РїРѕС‚РµСЂСЏРЅС‹ РЅРµРєРѕС‚РѕСЂС‹Рµ РґР°РЅРЅС‹Рµ, РЅР°РїСЂРёРјРµСЂ, РјРѕР¶РµС‚ РѕС‡РёСЃС‚РёС‚СЊСЃСЏ С‚Р°Р±Р»РёС†Р° СЃ РґР°РЅРЅС‹РјРё Рѕ РїРѕР»СЊР·РѕРІР°С‚РµР»СЏС…. РќРѕ CMS РјРѕР¶РµС‚ РЅРµ РїРѕРґРґРµСЂР¶РёРІР°С‚СЊ С‚РµРєСѓС‰РёРµ С‚Р°Р±Р»РёС†С‹, РїРѕСЌС‚РѕРјСѓ СЂРµРєРѕРјРµРЅРґСѓРµС‚СЃСЏ СЃРґРµР»Р°С‚СЊ СЂРµР·РµСЂРІРЅСѓСЋ РєРѕРїРёСЋ Рё РІРєР»СЋС‡РёС‚СЊ Р·Р°РјРµРЅСѓ, Р° Р·Р°С‚РµРј РІРѕСЃСЃС‚Р°РЅРѕРІРёС‚СЊ СЂРµР·РµСЂРІРЅСѓСЋ РєРѕРїРёСЋ.<br/><br/>Р•СЃР»Рё Р±Р°Р·Р° РґР°РЅРЅС‹С… РїСѓСЃС‚Р° РёР»Рё CMS СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚СЃСЏ РІ РїРµСЂРІС‹Р№ СЂР°Р·, С‚Рѕ РЅРµРѕР±С…РѕРґРёРјРѕ РІРєР»СЋС‡РёС‚СЊ Р·Р°РјРµРЅСѓ С‚Р°Р±Р»РёС†, С‡С‚РѕР±С‹ CMS РёРјРїРѕСЂС‚РёСЂРѕРІР°Р»Р° СЃРІРѕРё РЅР°СЃС‚СЂРѕР№РєРё РІ Р±Р°Р·Сѓ РґР°РЅРЅС‹С….<br/><br/><font color='red'>РџСЂРёРјРµС‡Р°РЅРёРµ.</font> CMS Р·Р°РјРµРЅРёС‚ С‚РѕР»СЊРєРѕ РЅРµРѕР±С…РѕРґРёРјС‹Рµ РґР»СЏ РµС‘ СЂР°Р±РѕС‚С‹ С‚Р°Р±Р»РёС†С‹.";
+		if(!isset($_POST['act']) || $_POST['act'] != "db_import"){
+		$content .= "Хотите перезаписать существующие таблицы?<br/><br/><form method='POST'><input type='hidden' name='act' value='db_import' /><input type='submit' name='yes' value=' ' style='text-decoration: none; background: url(%adress%/setup/tmpl/da.png) no-repeat; height: 47px; width: 150px; border: 0;'/><input type='submit' name='no' value=' ' style='    text-decoration: none;   background: url(%adress%/setup/tmpl/no.png) no-repeat;    height: 47px;    width: 150px;   border: 0;'></form><br/><br/><font color='red'>Внимание!</font> При включении замены существующих таблиц могут быть потеряны некоторые данные, например, может очиститься таблица с данными о пользователях. Но CMS может не поддерживать текущие таблицы, поэтому рекомендуется сделать резервную копию и включить замену, а затем восстановить резервную копию.<br/><br/>Если база данных пуста или CMS устанавливается в первый раз, то необходимо включить замену таблиц, чтобы CMS импортировала свои настройки в базу данных.<br/><br/><font color='red'>Примечание.</font> CMS заменит только необходимые для её работы таблицы.";
 		}
 		else{
 			if($_POST['yes'] != null){
-			include("../config.php");
+			include("../cms/config.php");
 			$sql = file_get_contents("scripts/db.sql");
 			$sql = str_replace("prefix_", config::db_pref, $sql);
 			
@@ -71,8 +72,8 @@ class Config{
 				foreach($tc as $num=>$arr) $db->insert($table,$arr);
 			}
 			$mysql->close();
-			$_SESSION['message'] = "Р’СЃРµ РЅРµРѕР±С…РѕРґРёРјС‹Рµ РґР°РЅРЅС‹Рµ Р±С‹Р»Рё РёРјРїРѕСЂС‚РёСЂРѕРІР°РЅС‹.";
-			}else $_SESSION['message'] .= "Р’С‹ РѕС‚РєР°Р·Р°Р»РёСЃСЊ РѕС‚ РёРјРїРѕСЂС‚Р° СЃС‚Р°РЅРґР°СЂС‚РЅС‹С… РЅР°СЃС‚СЂРѕРµРє.";
+			$_SESSION['message'] = "Все необходимые данные были импортированы.";
+			}else $_SESSION['message'] .= "Вы отказались от импорта стандартных настроек.";
 			next_stage();			
 		}
 		

@@ -1,28 +1,19 @@
 <?php
 
-// РЎРєСЂРёРїС‚ "Рѕ СЃРёСЃС‚РµРјРµ" РґР»СЏ Р°РґРјРёРЅРєРё
-// Р’С‹РІРѕРґРёС‚ РЅРµРєРѕС‚РѕСЂСѓСЋ РёРЅС„Сѓ РїРѕ СЃР±РѕСЂРєРµ(РІРµСЂСЃРёСЏ СЏРґСЂР°, С‡С‚Рѕ СѓСЃС‚Р°РЅРѕРІР»РµРЅРѕ Рё РґСЂ.)
-
-	$sc = libs::GetLib("database")->getAll("scripts","id",true);
-	foreach($sc as $num=>$script){
-	
-		$scripts .= ($num+1).".".$script['title']."<br/>";
-	
+	$sc = scripts::getAllScriptsInfo();
+        $num = 1;$a_num = 1;
+        $scripts = "";$admins = "";
+        foreach($sc as $script){
+            if(isset($script['title']) && isset($script['file'])){
+                if(!file_exists("scripts/".$script['file'].".php")){$script['title'] .= " | Не удалось найти файл";}
+                $scripts .= ($num++).".".$script['title']."<br/>";
+            }
+            if(isset($script['a_title']) && isset($script['a_file'])){
+                if(!file_exists("scripts/".$script['a_file'].".php")){$script['a_title'] .= " | Не удалось найти файл";}
+                $admins .= ($a_num++).".".$script['a_title']."<br/>";
+            }
 	}
-
-	$admins = "";
-	$i1 = 1;
-	$dir_ad = opendir("scripts/admin");
-	while($d = readdir($dir_ad)){
-		if($d != "." && $d != ".." && !is_dir($d)){
-		
-			$n = explode(".",$d);
-			$admins .= $i1.".".$n[0]."<br/>";
-			$i1++;
-			
-		}
-	}
-	closedir($dir_ad);
+	
 	$libs = "";
 	$i = 1;
 	$dir = opendir("lib");
@@ -38,19 +29,17 @@
 	
 	$content .= "
 	
-	<h2>Рћ СЃРёСЃС‚РµРјРµ</h2>
-	<div><a href='%adress%/index.php/admin'>Р’ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РёРІРЅСѓСЋ РїР°РЅРµР»СЊ.</a><br/><br/></div>
+	<h2>О системе</h2>
+	<div><a href='%adress%/index.php/admin'>В административную панель.</a><br/><br/></div>
 	<div><p>
-	Р’С‹ РїРѕР»СЊР·СѓРµС‚РµСЃСЊ CMS \"MSC: WebSite Engine\"<br/>
-	Р’РµСЂСЃРёСЏ СЏРґСЂР° СЃРёСЃС‚РµРјС‹: 2.0<br/>
-	Р’РµСЂСЃРёСЏ СЃРёСЃС‚РµРјС‹: A.2.0 CC(alpha 2.0 clear core | 8.12.2013)<br/>
-	РџСЂРёРјРµС‡Р°РЅРёРµ Рє СЃР±РѕСЂРєРµ: Р’ РґР°РЅРЅРѕРј Р±РёР»РґРµ РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ С‡РёСЃС‚РѕРµ СЏРґСЂРѕ CMS + РѕСЃРЅРѕРІРЅС‹Рµ Р±РёР±Р»РёРѕС‚РµРєРё Рё СЃРєСЂРёРїС‚ Р°РІС‚РѕСЂРёР·Р°С†РёРё/СЂРµРіРёСЃС‚СЂР°С†РёРё.
-	<br/><br/>
-	РЈСЃС‚Р°РЅРѕРІР»РµРЅРЅС‹Рµ СЃРєСЂРёРїС‚С‹ СЃР°Р№С‚Р°:<br/>
+	Вы пользуетесь CMS \"MSC: WebSite Engine\"<br/>
+	Версия ядра системы: ".MSC_WSE_CORE_VERSION."<br/>
+	Версия системы: ".MSC_WSE_ENGINE_VERION." (".MSC_WSE_ENGINE_VERSION_DESC.")<br/><br/>
+	Установленные скрипты сайта:<br/>
 	$scripts<br/>
-	РЈСЃС‚Р°РЅРѕРІР»РµРЅРЅС‹Рµ СЃРєСЂРёРїС‚С‹ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РёРІРЅРѕР№ РїР°РЅРµР»Рё:<br/>
+	Установленные скрипты административной панели:<br/>
 	$admins<br/>
-	РЈСЃС‚Р°РЅРѕРІР»РµРЅРЅС‹Рµ Р±РёР±Р»РёРѕС‚РµРєРё:<br/>
+	Установленные библиотеки:<br/>
 	$libs
 	</p></div>
 	

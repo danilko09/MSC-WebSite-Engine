@@ -1,6 +1,6 @@
 <?php
 
-	if($_POST['act'] != "next")$content = "РџСЂРµРґСЃС‚РѕСЏС‰РёРµ С€Р°РіРё:<br/><br/>1.РќР°СЃС‚СЂРѕР№РєР° Р±Р°Р·С‹ РґР°РЅРЅС‹С…<br/>2.РќР°Р·РЅР°С‡РµРЅРёРµ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂР°<br/>3.РЈСЃС‚Р°РЅРѕРІРєР° РЅРµРѕР±С…РѕРґРёРјС‹С… РєРѕРјРїРѕРЅРµРЅС‚РѕРІ<br/>4.Р—Р°РІРµСЂС€РµРЅРёРµ СѓСЃС‚Р°РЅРѕРІРєРё<br/><br/><form method='POST' action='#'><input type='hidden' name='act' value='next'/><input type='submit' value='' style='
+	if(!isset($_POST['act']) || $_POST['act'] != "next")$content = "Предстоящие шаги:<br/><br/>1.Настройка базы данных<br/>2.Назначение администратора<br/>3.Установка необходимых компонентов<br/>4.Завершение установки<br/><br/><form method='POST' action='#'><input type='hidden' name='act' value='next'/><input type='submit' value='' style='
     text-decoration: none;
     background: url(%adress%/setup/tmpl/begin.png) no-repeat;
     height: 47px;

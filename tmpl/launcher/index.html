@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>MCWL - пример лаунчера</title>
+        <meta charset="WINDOWS-1251"/>
+        <style>
+            html {
+                display: block;
+                overflow: hidden;
+                height: 495px;
+                width: 750px;
+                margin: 0;
+                padding: 0;
+            }
+            
+            body {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                width: 100%;
+            }
+            
+            #window {
+                
+                height: 100%;
+                width: auto;
+                
+                
+                color: white;
+                text-shadow: 0 0 2 #000000;
+                font-size: 17px;
+                font-family: sans-serif;
+                background-color: #000000;
+                margin: 0;
+                padding: 0;
+                border: 2px solid black;
+                /*background-image: url('http://mcwl.esy.es/server/theme/launcher/wood.png');*/
+            }
+            #window_title{
+                margin: 6px;
+            }
+            #buttons {
+                display: none;
+                padding: 10px;
+                text-align: center;
+            } 
+            #news {
+                margin-top: 10px;
+                padding-left: 10px;
+                height: 367px;
+                background-color: #cdbc86;
+                background-image: url('bg.png');
+            }
+            
+            #login_box form {
+                margin-top: 5px;
+                margin-right: 5px;
+            }
+            
+            #login_box form input[type=text], #login_box form input[type=password]{
+                width: 190px;
+            }
+            
+            #user_box {
+                padding: 12px;
+                text-align: center;
+                vertical-align: central;
+            }
+            
+            input[type=text], input[type=password] {
+                border-radius: 0;
+                border: 2px white solid;
+                background-color: white;
+            }
+            /*стиль кнопок */
+            input[type=submit], input[type=button], a {
+                border-radius: 0;
+                border: 0;
+                background-color: #bd3f19;
+                /*background-image: url('http://mcwl.esy.es/server/theme/launcher/wood3.png');*/
+                
+                
+                font-size: 17px;
+                text-decoration: none;
+                color: white;
+                
+            }
+            a {
+                padding: 3px;
+            }
+            input[type=submit]:hover, input[type=button]:hover, a:hover {
+                background-color: #be3f19;
+            }
+            li {
+                list-style: none;
+            }
+        </style>
+    </head>
+    <body id="block">
+        <script type='text/javascript'>
+            
+            var time = 0;
+            
+            function download(timeed) {
+                var speed;
+                var loaded = launcher.getDownloaded(1);
+                var timed;
+                time += timeed;
+                
+                speed = Math.round(loaded/time)
+                
+                if(time < 0){speed = "0 Byte/s (match error; time="+time+")";}
+                else if(speed < 1024){speed = Math.round(loaded/time)+" Byte/s";}
+                else if(speed < 1024*1024){speed = Math.round(loaded/1024/time)+" KByte/s";}
+                else{speed = Math.round(loaded/1024/1024/time)+" MByte/s";}
+                
+                if(time < 60){timed = time + " Секнуд(а)";}
+                else{timed = Math.round(time/60)+" Минут(а)";}
+                
+                var prc = Math.round(loaded/launcher.getTotalSize(1)*100);
+                
+                if(loaded < 1024){loaded = loaded+" Байт(а)";}
+                else if(loaded < 1024*1024){loaded = Math.round(loaded/1024)+ " КБайт(а)";}
+                else if(loaded < 1024*1024*1024){loaded = Math.round(loaded/1024/1024)+" МБайт(а)";}
+                else{loaded = Math.round(loaded/1024/1024/1024)+ " ГБайт(а)";}
+                
+                
+                document.getElementById("status").innerHTML = "Скорость: "+speed+"; Загружено: "+loaded+"["+prc+"%]; Времени прошло: "+timed+";";
+            }
+            var gaming = 0;
+             function gameer(){
+                if(gaming === 2 && (launcher.getStatus(1) === 0)){gaming = 0;}
+                if(gaming === 0){
+                    launcher.print('starting game..');
+                launcher.setGameParam("auth_player_name","danilko");
+                launcher.startGame(1);
+                launcher.print("Task done");
+                gaming = 1;
+            }
+            var stat = "";
+            switch(launcher.getStatus(1)){
+                case -1: stat = "Возникла ошибка"; break;
+                case 0: stat = "Загрузка и распаковка файлов завершена."; break;
+                case 1: stat = "Идет скачивание файлов игры"; break;
+                case 2: stat = "Идет распаковка файлов игры"; break;
+            }
+            document.getElementById("status2").innerHTML = stat;
+            }
+            function playGame(){
+                
+                gaming = 0;
+                if(!launcher.isExists(1)){
+                    
+                launcher.startDownload('%adress%/mcwl/HTTP_ZIP.php',1,'HTTP_ZIP');
+                time = 0;gaming = 2;
+                download(1);
+                setInterval('download(1)',1000);
+                
+            }
+            
+                setInterval('gameer()',1000);
+        }
+           
+  var canmove = true;
+  var block = document.getElementById("block");
+  delta_x = 0;
+  delta_y = 0;
+  block.onmousedown = saveXY;
+  document.onmouseup = clearXY;
+  function saveXY(obj_event) {
+    
+    delta_mx = launcher.getMouseX();
+    delta_my = launcher.getMouseY();
+    
+    delta_x = delta_mx - launcher.getWinX();
+    delta_y = delta_my - launcher.getWinY();
+    
+    document.onmousemove = moveBlock;
+  }
+  function clearXY() {
+    document.onmousemove = null; // При отпускании мыши убираем обработку события движения мыши
+  }
+  function moveBlock(obj_event) {
+      if( obj_event.target.getAttribute('unselectable') !== 'on' )
+    obj_event.target.ownerDocument.defaultView.getSelection().removeAllRanges();
+      if(!canmove){return;}
+    x = launcher.getMouseX() - launcher.getWinX();
+    y = launcher.getMouseY() - launcher.getWinY();
+    new_x = launcher.getWinX() + x - delta_x;
+    new_y = launcher.getWinY() + y - delta_y;
+    launcher.setWinX(parseInt(new_x));
+    launcher.setWinY(parseInt(new_y));
+    if( obj_event.target.getAttribute('unselectable') !== 'on' )
+    obj_event.target.ownerDocument.defaultView.getSelection().removeAllRanges();
+  }
+  
+  launcher.print("hello");
+        </script>
+<div id="window">
+        <div id="window_title">MCWL - Пример лаунчера <a href="#" style="position: absolute; padding-top: 3px; margin: 0; top: 0; right: 12px; height: 18px; width: 40px; text-align: center; background-color: red; background-image: 0;" onclick="launcher.exit();">X</a></div>
+        <center>
+        <div id="status"></div>
+        <div id="status2"></div>
+        <content/>
+        <div style="display: none;" id="user_box">
+            <div id="status"></div>
+        </div>
+        </center>
+</div>
+    </body>
+</html>

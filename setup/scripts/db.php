@@ -2,39 +2,39 @@
 
 // `admin`
 $admin = array(
-  array('id' => '1','alias' => 'blocks','title' => '–ú–µ–Ω–µ–¥–∂–µ—Ä –±–ª–æ–∫–æ–≤','group' => '–û—Å–Ω–æ–≤–Ω—ã–µ'),
-  array('id' => '2','alias' => 'scripts','title' => '–ú–µ–Ω–µ–¥–∂–µ—Ä —Å–∫—Ä–∏–ø—Ç–æ–≤','group' => '–û—Å–Ω–æ–≤–Ω—ã–µ'),
-  array('id' => '3','alias' => 'pages','title' => '–ú–µ–Ω–µ–¥–∂–µ—Ä —Å—Ç—Ä–∞–Ω–∏—Ü','group' => '–û—Å–Ω–æ–≤–Ω—ã–µ'),
-  array('id' => '4','alias' => 'menus','title' => '–ú–µ–Ω–µ–¥–∂–µ—Ä –º–µ–Ω—é','group' => '–û—Å–Ω–æ–≤–Ω—ã–µ'),
-  array('id' => '5','alias' => 'about','title' => '–û —Å–∏—Å—Ç–µ–º–µ','group' => '–û—Å–Ω–æ–≤–Ω—ã–µ')
+  array('id' => '1','alias' => 'blocks','title' => 'ÃÂÌÂ‰ÊÂ ·ÎÓÍÓ‚','group' => 'ŒÒÌÓ‚Ì˚Â'),
+  array('id' => '2','alias' => 'scripts','title' => 'ÃÂÌÂ‰ÊÂ ÒÍËÔÚÓ‚','group' => 'ŒÒÌÓ‚Ì˚Â'),
+  array('id' => '3','alias' => 'pages','title' => 'ÃÂÌÂ‰ÊÂ ÒÚ‡ÌËˆ','group' => 'ŒÒÌÓ‚Ì˚Â'),
+  array('id' => '4','alias' => 'menus','title' => 'ÃÂÌÂ‰ÊÂ ÏÂÌ˛','group' => 'ŒÒÌÓ‚Ì˚Â'),
+  array('id' => '5','alias' => 'about','title' => 'Œ ÒËÒÚÂÏÂ','group' => 'ŒÒÌÓ‚Ì˚Â')
+);
+
+// `blocks`
+$blocks = array(
+  array('id' => '1','alias' => 'news','title' => 'ÕÓ‚ÓÒÚË','position' => 'sidebar','order' => '3','code' => '<content type=\'script\' name=\'news\' action=\'getNewsBlock\'/>
+'),
+  array('id' => '2','alias' => 'news_search','title' => 'œÓËÒÍ ÔÓ Ò‡ÈÚÛ','position' => 'sidebar','order' => '0','code' => '<content type=\'script\' name=\'search\' action=\'getSearchBlock\'/>
+
+
+'),
+  array('id' => '3','alias' => '','title' => '‡ıË‚','position' => 'sidebar','order' => '0','code' => '<content type=\'script\' name=\'news\' action=\'getArchiveBlock\'/>')
 );
 
 // `lib`
 $lib = array(
-  array('id' => '2','title' => 'testing','file' => 'testing')
+  array('id' => '1','title' => 'testing','file' => 'testing')
 );
 
 // `menus`
 $menus = array(
-  array('id' => '1','alias' => 'main','title' => '–ì–ª–∞–≤–Ω–æ–µ –º–µ–Ω—é','links' => '–ù–∞ –≥–ª–∞–≤–Ω—É—é|%adress%/index.php/|all,–ê–¥–º–∏–Ω–∫–∞|%adress%/index.php/admin|all')
+  array('id' => '1','alias' => 'main','title' => '√Î‡‚ÌÓÂ ÏÂÌ˛','links' => 'Õ‡ „Î‡‚ÌÛ˛|%adress%/index.php/|all,¿‰ÏËÌÍ‡|%adress%/index.php/admin|all')
 );
 
-$pages = array(
-  array('id' => '1','alias' => 'home','title' => '–î–æ–±—Ä–æ –ø–æ–∂–∞–ª–æ–≤–∞—Ç—å','content' => '<p>–£—Å—Ç–∞–Ω–æ–≤–∫–∞ CMS "MSC: WebSite Engine A.2.0 Preview 2" —É—Å–ø–µ—à–Ω–æ –∑–∞–≤–µ—Ä—à–µ–Ω–∞ !</p>
-<p>–≠—Ç–æ –≥–ª–∞–≤–Ω–∞—è —Å—Ç—Ä–∞–Ω–∏—Ü–∞ —Å–∞–π—Ç–∞, –¥–ª—è –µ—ë —Ä–µ–¥–∞–∫—Ç–∏—Ä–æ–≤–∞–Ω–∏—è –≤–∞–º –Ω—É–∂–Ω–æ –∏—Å–ø–æ–ª—å–∑–æ–≤–∞—Ç—å –º–µ–Ω–µ–¥–∂–µ—Ä —Å—Ç—Ä–∞–Ω–∏—Ü –≤ –∞–¥–º–∏–Ω–∏—Å—Ç—Ä–∞—Ç–∏–≤–Ω–æ–π –ø–∞–Ω–µ–ª–∏.</p>
-<p>&nbsp;</p>
-<p>–ì–ª–∞–≤–Ω–æ–µ –º–µ–Ω—é —Å–∞–π—Ç–∞:</p>
-<p><content type=\'menu\' name=\'main\'/></p>
-<p>&nbsp;</p>'),
-  array('id' => '2','alias' => 'registration','title' => '–†–µ–≥–∏—Å—Ç—Ä–∞—Ü–∏—è','content' => '<p><content type=\'script\' name=\'auth\' action=\'GetRegister\'/></p>'),
-  array('id' => '3','alias' => 'auth','title' => '–ê–≤—Ç–æ—Ä–∏–∑–∞—Ü–∏—è','content' => '<p><content type=\'script\' name=\'auth\' action=\'GetAuth\'/></p>'),
-  array('id' => '4','alias' => 'logout','title' => '–í—ã–π—Ç–∏','content' => '<p><content type=\'script\' name=\'auth\' action=\'DoLogout\'/></p>'),
-  );
-
-// `scripts`
-$scripts = array(
-  array('id' => '1','title' => '–∞–≤—Ç–æ—Ä–∏–∑–∞—Ü–∏—è\\—Ä–µ–≥–∏—Å—Ç—Ä–∞—Ü–∏—è','alias' => 'auth','file' => 'users'),
-  );
+// `news`
+$news = array(
+  array('id' => '1','title' => 'hello','category' => 'default','date' => '2013-11-01','short' => 'hello short','full' => 'hello full'),
+  array('id' => '2','title' => '“ÂÒÚ','category' => 'default','date' => '2013-11-01','short' => 'ÚÂÒÚÓ‚‡ˇ ÌÓ‚ÓÒÚ¸','full' => 'ÔÓÎÌÓÂ ÒÓ‰ÂÊ‡ÌËÂ ÚÂÒÚÓ‚ÓÈ ÌÓ‚ÓÒÚË')
+);
 
 // `server`
 $server = array(
@@ -43,10 +43,9 @@ $server = array(
 );
 
 $import = array(
-	'admin'=>$admin,
+	'blocks'=>$blocks,
 	'lib'=>$lib,
 	'menus'=>$menus,
-	'pages'=>$pages,
-	'scripts'=>$scripts,
+	'news'=>$news,
 	'server'=>$server
 );

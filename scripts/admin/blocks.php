@@ -1,51 +1,50 @@
 <?php
 
-// РњРµРЅРµРґР¶РµСЂ Р±Р»РѕРєРѕРІ
-// РќСѓ СЃРѕР±С‚РІРµРЅРЅРѕ СЃРѕР·РґР°РЅРёРµ/СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёРµ/СѓРґР°Р»РµРЅРёРµ Р±Р»РѕРєРѕРІ.
-
-	$content = "<h5>Р РµРґР°РєС‚РѕСЂ Р±Р»РѕРєРѕРІ</h5><a href='%adress%/index.php/admin'>РќР° РіР»Р°РІРЅСѓСЋ СЃС‚СЂР°РЅРёС†Сѓ РїР°РЅРµР»Рё СѓРїСЂР°РІР»РµРЅРёСЏ.</a>";
-	$db = libs::GetLib("database");
+	$content = "<h5>Редактор блоков</h5><a href='%adress%/index.php/admin'>На главную страницу панели управления.</a>";
+	$db = new database();
 	
 	if($adm[3] == ""){
 	
 		$blocks = $db->getAll("blocks","id",true);
-		$content .= "<br/>Р’С‹Р±РµСЂРёС‚Рµ Р±Р»РѕРє, РєРѕС‚РѕСЂС‹Р№ С…РѕС‚РёС‚Рµ РѕС‚СЂРµРґР°РєС‚РёСЂРѕРІР°С‚СЊ РёР»Рё СѓРґР°Р»РёС‚СЊ.<br/><br/>";
+		$content .= "<br/>Выберите блок, который хотите отредактировать или удалить.<br/><br/>";
 		
 		foreach($blocks as $num => $block){
 		
-			$content .= ($num+1)."."."<a href='%adress%/index.php/admin/blocks/edit/".$block['id']."'>".$block['title']."</a> (<a href='%adress%/index.php/admin/blocks/del/".$block['id']."'>РЈРґР°Р»РёС‚СЊ</a>)<br/>";
+			$content .= ($num+1)."."."<a href='%adress%/index.php/admin/blocks/edit/".$block['id']."'>".$block['title']."</a> (<a href='%adress%/index.php/admin/blocks/del/".$block['id']."'>Удалить</a>)<br/>";
 		
 		}
-		$content .= "<br/><a href='%adress%/index.php/admin/blocks/create'>РЎРѕР·РґР°С‚СЊ РЅРѕРІС‹Р№ Р±Р»РѕРє</a><br/><a href='%adress%/index.php/admin/blocks/pos'>РќР°СЃС‚СЂРѕР№РєР° РїРѕР·РёС†РёР№ Р±Р»РѕРєРѕРІ.</a>";
+		$content .= "<br/><a href='%adress%/index.php/admin/blocks/create'>Создать новый блок</a><br/><a href='%adress%/index.php/admin/blocks/pos'>Настройка позиций блоков.</a>";
 	}elseif($adm[3] == "edit"){
 	
 		$block = $db->GetElementOnID("blocks", $adm[4]);
-		$content .= " | <a href='%adress%/index.php/admin/blocks'>Рљ СЃРїРёСЃРєСѓ Р±Р»РѕРєРѕРІ.</a>";
+		$content .= " | <a href='%adress%/index.php/admin/blocks'>К списку блоков.</a>";
 		
-		libs::GetLib("templates")->SetPageTmpl("single");
+		templates::SetPageTmpl("single");
 		
-		if(libs::LoadLib("editors/code")){
+		if(scripts::checkScript("editors_code")){
 		
 			$arr['id'] = $block['id'];
-			$arr['code'] = libs::GetLib("editors/code")->GetField("code",$block['code']);
+			$arr['code'] = editors_code::GetField("code",$block['code']);
 			$arr['title'] = $block['title'];
 			$arr['alias'] = $block['alias'];
 			$arr['position'] = $block['position'];
-			
+		
+                        var_dump($block['code']);
+                        
 			$arr['method'] = "get";
 			$arr['action'] = "%adress%/index.php/admin/blocks/save/".$block['id'];
 			
-			$content .= libs::GetLib("templates")->getRTmpl("admin/block_edit",$arr);
+			$content .= templates::getRTmpl("admin/block_edit",$arr);
 		
-			//$content .= "<br/><div class='sidebox'><form method='get' action='%adress%/index.php/admin/blocks/save/".$block['id']."'><input type='submit' value='РЎРѕС…СЂР°РЅРёС‚СЊ'/><br/>РќР°Р·РІР°РЅРёРµ Р±Р»РѕРєР°(РѕС‚РѕР±СЂР°Р¶Р°РµС‚СЃСЏ РІ Р·Р°РіРѕР»РѕРІРєРµ Р±Р»РѕРєР°): <input type='text' /><br/>РђР»РёР°СЃ Р±Р»РѕРєР°(РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ С‚РµРіРµ content РІ РєР°С‡РµСЃС‚РІРµ РїР°СЂР°РјРµС‚СЂР° name):<input type='text' /><br/>РџРѕР·РёС†РёСЏ Р±Р»РѕРєР°(РїР°СЂР°РјРµС‚СЂ name РёР· С‚РµРіР° РїРѕР·РёС†Рё РёР»Рё Р°Р»РёР°СЃ РїРѕР·РёС†РёРё): <input type='text' />РљРѕРґ Р±Р»РѕРєР°:".libs::GetLib("editors/code")->GetField("code",$block['code'])."</form></div><div style='height: 20px;'></div>";
+			//$content .= "<br/><div class='sidebox'><form method='get' action='%adress%/index.php/admin/blocks/save/".$block['id']."'><input type='submit' value='Сохранить'/><br/>Название блока(отображается в заголовке блока): <input type='text' /><br/>Алиас блока(используется в теге content в качестве параметра name):<input type='text' /><br/>Позиция блока(параметр name из тега позици или алиас позиции): <input type='text' />Код блока:".libs::GetLib("editors/code")->GetField("code",$block['code'])."</form></div><div style='height: 20px;'></div>";
 					
-                }else{$content .= "<div class='warning-box'>РќРµ РЅР°Р№РґРµРЅР° Р±РёР±Р»РёРѕС‚РµРєР° РІРёР·СѓР°Р»СЊРЅРѕРіРѕ СЂРµРґР°РєС‚РѕСЂР° 'lib/editors/visual'.<br/>РЈСЃС‚Р°РЅРѕРІРёС‚Рµ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰СѓСЋ Р±РёР±Р»РёРѕС‚РµРєСѓ РґР»СЏ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ Р±Р»РѕРєРѕРІ.</div>";}
+		}else $content .= "<div class='warning-box'>Не найдена библиотека визуального редактора 'editors_code'.<br/>Установите соответствующую библиотеку для редактирования блоков.</div>";
 	
 	}elseif($adm[3] == "create"){
 	
-	$content .= " | <a href='%adress%/index.php/admin/blocks'>Рљ СЃРїРёСЃРєСѓ Р±Р»РѕРєРѕРІ.</a>";
+	$content .= " | <a href='%adress%/index.php/admin/blocks'>К списку блоков.</a>";
 		
-		libs::GetLib("templates")->SetPageTmpl("single");
+		templates::SetPageTmpl("single");
 		
 		if(libs::LoadLib("editors/code")){
 		
@@ -58,17 +57,17 @@
 			$arr['method'] = "get";
 			$arr['action'] = "%adress%/index.php/admin/blocks/save/".$arr['id'];
 			
-			$content .= libs::GetLib("templates")->getRTmpl("admin/block_edit",$arr);	
+			$content .= templates::getRTmpl("admin/block_edit",$arr);	
 			
-                }else{$content .= "<div class='warning-box'>РќРµ РЅР°Р№РґРµРЅР° Р±РёР±Р»РёРѕС‚РµРєР° РІРёР·СѓР°Р»СЊРЅРѕРіРѕ СЂРµРґР°РєС‚РѕСЂР° 'lib/editors/visual'.<br/>РЈСЃС‚Р°РЅРѕРІРёС‚Рµ СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰СѓСЋ Р±РёР±Р»РёРѕС‚РµРєСѓ РґР»СЏ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ Р±Р»РѕРєРѕРІ.</div>";}
+		}else $content .= "<div class='warning-box'>Не найдена библиотека визуального редактора 'lib/editors/visual'.<br/>Установите соответствующую библиотеку для редактирования блоков.</div>";
 	
 	}elseif($adm[3] == "pos"){
 	
-		$content .= " | <a href='%adress%/index.php/admin/blocks'>Рљ СЃРїРёСЃРєСѓ Р±Р»РѕРєРѕРІ.</a>";
+		$content .= " | <a href='%adress%/index.php/admin/blocks'>К списку блоков.</a>";
 		
 		if($adm[4] == ""){
 		
-		$content .= "<br/>Р’С‹Р±РµСЂРёС‚Рµ РїРѕР·РёС†РёСЋ, РІ РєРѕС‚РѕСЂРѕР№ РІС‹ С…РѕС‚РёС‚Рµ РёР·РјРµРЅРёС‚СЊ РїРѕСЂСЏРґРѕРє Р±Р»РѕРєРѕРІ(РїСѓСЃС‚С‹Рµ РїРѕР·РёС†РёРё СЃРєСЂС‹С‚С‹).<br/><br/>";
+		$content .= "<br/>Выберите позицию, в которой вы хотите изменить порядок блоков(пустые позиции скрыты).<br/><br/>";
 		
 		$blocks = $db->getAll("blocks","position",true);
 		
@@ -86,70 +85,78 @@
 		}
 		
 		}else{
-			$content .= " | <a href='%adress%/index.php/admin/blocks/pos'>Рљ СЃРїРёСЃРєСѓ РїРѕР·РёС†РёР№.</a>";
+			$content .= " | <a href='%adress%/index.php/admin/blocks/pos'>К списку позиций.</a>";
 			$blocks = $db->getAllOnField("blocks","position",$adm[4],"title",true);
-			$content .= "<br/>Р’ СЃРїРёСЃРєРµ РЅРёР¶Рµ РЅР°С…РѕРґСЏС‚СЃСЏ Р±Р»РѕРєРё, Р° РІ С‚РµРєСЃС‚РѕРІРѕРј РїРѕР»Рµ РїРѕСЃР»Рµ РЅР°Р·РІР°РЅРёСЏ Р±Р»РѕРєР° РµРіРѕ РїРѕСЂСЏРґРѕРє РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ.<br/><br/><form action='%adress%/index.php/admin/blocks/savepos/' method='get'>";
+			$content .= "<br/>В списке ниже находятся блоки, а в текстовом поле после названия блока его порядок отображения.<br/><br/><form action='%adress%/index.php/admin/blocks/savepos/' method='get'>";
 			foreach($blocks as $num=>$block){
-				$content .= ($num+1).".".$block['title']." <input type='text' name='".$block['id']."' value='".$block['order']."' style='width: 30px;'/><br/>";
+				$content .= ($num+1).".".$block['title']." <input type='text' name='".$block['alias']."' value='".$block['order']."' style='width: 30px;'/><br/>";
 			}
-			$content .= "<input type='submit' value='РЎРѕС…СЂР°РЅРёС‚СЊ'/></form>";
+			$content .= "<input type='submit' value='Сохранить'/></form>";
 		}
 	
 	
 	}elseif($adm[3] == "savepos"){
 	
-		$content .= " | <a href='%adress%/index.php/admin/blocks'>Рљ СЃРїРёСЃРєСѓ Р±Р»РѕРєРѕРІ.</a>";
-		$content .= " | <a href='%adress%/index.php/admin/blocks/pos'>Рљ СЃРїРёСЃРєСѓ РїРѕР·РёС†РёР№.</a>";
+		$content .= " | <a href='%adress%/index.php/admin/blocks'>К списку блоков.</a>";
+		$content .= " | <a href='%adress%/index.php/admin/blocks/pos'>К списку позиций.</a>";
 		
-		foreach(filter_input_array(INPUT_GET) as $alias=>$order){
-			$db->setField("blocks","order",$order,"id",$alias);
+		foreach($_GET as $alias=>$order){
+			$db->setField("blocks","order",$order,"alias",$alias);
 		}
-		$content .= libs::GetLib("templates")->GetRTmpl("success",array("message"=>"РџРѕР·РёС†РёРё Р±Р»РѕРєРѕРІ СЃРѕС…СЂР°РЅРµРЅС‹."));
+		$content .= templates::GetRTmpl("success",array("message"=>"Позиции блоков сохранены."));
 	
 	}elseif($adm[3] == "del"){
 		
-		$content .= " | <a href='%adress%/index.php/admin/blocks'>Рљ СЃРїРёСЃРєСѓ Р±Р»РѕРєРѕРІ.</a>";
+		$content .= " | <a href='%adress%/index.php/admin/blocks'>К списку блоков.</a>";
 		$ex = $db->isExists("blocks","id",$adm[4]);
 		if($ex){
 			$title = $db->GetField("blocks","title","id",$adm[4]);
 			$db->DeleteOnID("blocks",$adm[4]);
-			$content .= libs::GetLib("templates")->GetRTmpl("success",array("message"=>"Р‘Р»РѕРє '$title' СѓРґР°Р»РµРЅ."));
-                }else{$content .= libs::GetLib("templates")->GetRTmpl("error",array("message"=>"Р‘Р»РѕРє СЃ С‚Р°РєРёРј id РЅРµ РЅР°Р№РґРµРЅ."));}
+			$content .= templates::GetRTmpl("success",array("message"=>"Блок '$title' удален."));
+		}else $content .= templates::GetRTmpl("error",array("message"=>"Блок с таким id не найден."));
 		
 	}elseif($adm[3] == "save"){
 	
-		$content .= " | <a href='%adress%/index.php/admin/blocks'>Рљ СЃРїРёСЃРєСѓ Р±Р»РѕРєРѕРІ.</a>";
+		$content .= " | <a href='%adress%/index.php/admin/blocks'>К списку блоков.</a>";
 	
-		if(filter_input(INPUT_GET,'code') != "" && $adm[4] != "" && libs::GetLib("database")->isExists("blocks","id",$adm[4])){
+		if($_GET['code'] != "" && $adm[4] != "" && (new database())->isExists("blocks","id",$adm[4])){
 		
-			$code = str_replace(config::site_url,"%adress%",filter_input(INPUT_GET,'code'));
+			$code = str_replace($url_base,"%adress%",$_GET['code']);
+			$code = str_replace("\\\\","\\",$code);
+			$code = str_replace("\\\"","\"",$code);
+			$code = str_replace("\\'","'",$code);
 		
-			libs::GetLib("database")->setField("blocks","code",$code,"id",$adm[4]);
-			libs::GetLib("database")->setField("blocks","title",filter_input(INPUT_GET,'title'),"id",$adm[4]);
-			libs::GetLib("database")->setField("blocks","alias",filter_input(INPUT_GET,'alias'),"id",$adm[4]);
-			libs::GetLib("database")->setField("blocks","position",filter_input(INPUT_GET,'position'),"id",$adm[4]);
+                        $db = new database();
+                        
+			$db->setField("blocks","code",$code,"id",$adm[4]);
+			$db->setField("blocks","title",$_GET['title'],"id",$adm[4]);
+			$db->setField("blocks","alias",$_GET['alias'],"id",$adm[4]);
+			$db->setField("blocks","position",$_GET['position'],"id",$adm[4]);
 			
-			$content .= libs::GetLib("templates")->GetRTmpl("success", array('message'=>'Р‘Р»РѕРє "'.filter_input(INPUT_GET,'title').'" СѓСЃРїРµС€РЅРѕ СЃРѕС…СЂР°РЅРµРЅ.'));
+			$content .= templates::GetRTmpl("success", array('message'=>'Блок "'.$_GET['title'].'" успешно сохранен.'));
 		
-		}elseif(filter_input(INPUT_GET,'code') != "" && $adm[4] != "" && !libs::GetLib("database")->isExists("blocks","id",$adm[4])){
+		}elseif($_GET['code'] != "" && $adm[4] != "" && !libs::GetLib("database")->isExists("blocks","id",$adm[4])){
 		
-			$code = str_replace(config::site_url,"%adress%",filter_input(INPUT_GET,'code'));
+			$code = str_replace(config::site_url,"%adress%",$_GET['code']);
+			$code = str_replace("\\\\","\\",$code);
+			$code = str_replace("\\\"","\"",$code);
+			$code = str_replace("\\'","'",$code);
 			
 			$block['code'] = $code;
-			$block['title'] = filter_input(INPUT_GET,'title');
-			$block['alias'] = filter_input(INPUT_GET,'alias');
-			$block['position'] = filter_input(INPUT_GET,'position');
+			$block['title'] = $_GET['title'];
+			$block['alias'] = $_GET['alias'];
+			$block['position'] = $_GET['position'];
 			
 			libs::GetLib("database")->insert("blocks",$block);
 			
-			$content .= libs::GetLib("templates")->GetRTmpl("success", array('message'=>'Р‘Р»РѕРє "'.filter_input(INPUT_GET,'title').'" СѓСЃРїРµС€РЅРѕ СЃРѕС…СЂР°РЅРµРЅ.'));
+			$content .= templates::GetRTmpl("success", array('message'=>'Блок "'.$_GET['title'].'" успешно сохранен.'));
 		
 		}else{
 			
-			$content .= libs::GetLib("templates")->GetRTmpl("error", array('message'=>'РџСЂРё СЃРѕС…СЂР°РЅРµРЅРёРё РїСЂРѕРёР·РѕС€Р»Р° РѕС€РёР±РєР°.'));
+			$content .= templates::GetRTmpl("error", array('message'=>'При сохранении произошла ошибка.'));
 			
 		}
 	
-        }else{$content .= "<br/><br/><div class='warning-box'>РќРµ РёР·РІРµСЃС‚РЅС‹Р№ С‚РёРї РѕРїРµСЂР°С†РёРё СЃ Р±Р»РѕРєР°РјРё.</div>";}
+	}else $content .= "<br/><br/><div class='warning-box'>Не известный тип операции с блоками.</div>";
 
 ?>

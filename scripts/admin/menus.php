@@ -1,91 +1,89 @@
 <?php
 
-// РњРµРЅРµРґР¶РµСЂ РјРµРЅСЋ
-// Р­С‚РёРј РІСЃРµ СЃРєР°Р·Р°РЅРѕ :)
-// Р’РѕРѕР±С‰Рµ РїРѕРєР° РЅРµ РѕС‡РµРЅСЊ РїСЂРѕСЂР°Р±РѕС‚Р°РЅ, РЅРѕ РїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ РјРѕР¶РЅРѕ.
-
-	$content .= "<a href='%adress%/index.php/admin'>Р’ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РёРІРЅСѓСЋ РїР°РЅРµР»СЊ.</a>";
+	$content .= "<a href='%adress%/index.php/admin'>В административную панель.</a>";
 	$db = libs::GetLib("database");
 	
 	if($adm[3] == ""){
 		
 		$menus = $db->getAll("menus","title",true);
 		
-		$content .= "<br/>Р’С‹Р±РµСЂРёС‚Рµ РјРµРЅСЋ РґР»СЏ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ.<br/><br/>";
+		$content .= "<br/>Выберите меню для редактирования.<br/><br/>";
 		
 		foreach($menus as $num=>$menu){
 		
-			$content .= ($num+1).".<a href='%adress%/index.php/admin/menus/view/".$menu['id']."'>".$menu['title']."</a>[<a href='%adress%/index.php/admin/menus/remmen/".$menu['id']."'>РЈРґР°Р»РёС‚СЊ</a>]<br/>";
+			$content .= ($num+1).".<a href='%adress%/index.php/admin/menus/view/".$menu['id']."'>".$menu['title']."</a>[<a href='%adress%/index.php/admin/menus/remmen/".$menu['id']."'>Удалить</a>]<br/>";
 		
 		}
 		
-		$content .= "<br/><a href='%adress%/index.php/admin/menus/new/'>РЎРѕР·РґР°С‚СЊ РЅРѕРІРѕРµ РјРµРЅСЋ.</a><br/><br/>";
+		$content .= "<br/><a href='%adress%/index.php/admin/menus/new/'>Создать новое меню.</a><br/><br/>";
 	
 	}elseif($adm[3] == "view"){
 
-		$content .= " | <a href='%adress%/index.php/admin/menus'>Рљ СЃРїРёСЃРєСѓ РјРµРЅСЋ.</a><br/>Р’С‹ РјРѕР¶РµС‚Рµ РїРѕРїСЂРѕР±Р°РІС‚СЊ РїРµСЂРµР№С‚Рё РїРѕ СЃСЃС‹Р»РєР°Рј Рё РїРѕСЃРјРѕС‚СЂРµС‚СЊ РєСѓРґР° РѕРЅРё РІРµРґСѓС‚.<br/>Р’ РєСЂСѓРіР»С‹С… СЃРєРѕР±РєР°С… РІС‹РІРѕРґРёС‚СЃСЏ РіСЂСѓРїРїР°, РєРѕС‚РѕСЂРѕР№ РѕС‚РѕР±СЂР°Р¶Р°РµС‚СЃСЏ СЌС‚РѕС‚ РїСѓРЅРєС‚ РјРµРЅСЋ(РµСЃР»Рё С‚Р°Рј СЃС‚РѕРёС‚ all, С‚Рѕ СЃСЃС‹Р»РєР° РІС‹РІРѕРґРёС‚СЃСЏ РІСЃРµРј)<br/>Р’ РєРІРґСЂР°С‚РЅС‹С… СЃРєРѕР±РєР°С… СЃСЃС‹Р»РєРё РЅР° СЃС‚СЂР°РЅРёС†Сѓ СЂРµРґР°РєС‚РёСЂРѕРІР°РЅРёСЏ Рё РЅР° СѓРґР°Р»РµРЅРёРµ РїСѓРЅРєС‚Р° РјРµРЅСЋ.<br/><br/>";
+		$content .= " | <a href='%adress%/index.php/admin/menus'>К списку меню.</a><br/>Вы можете попробавть перейти по ссылкам и посмотреть куда они ведут.<br/>В круглых скобках выводится группа, которой отображается этот пункт меню(если там стоит all, то ссылка выводится всем)<br/>В квдратных скобках ссылки на страницу редактирования и на удаление пункта меню.<br/><br/>";
 	
-		$menu_arr = $db->getAllOnField("menus","id",$adm[4],"id",true);
-		$menu = $menu_arr[0];
+		$menu = $db->getAllOnField("menus","id",$adm[4],"id",true);
+		$menu = $menu[0];
 		
-                if($menu['links'] === ""){$content .= "( РїСѓСЃС‚Рѕ )<br/>";}
+		if($menu['links'] === "")$content .= "( пусто )<br/>";
 		else{
 			$links = explode(",",$menu['links']);
 			$i = 1;
 			foreach($links as $num => $link){
-                                if($link === ""){continue;}
+				if($link === "") continue;
 				$link = explode("|",$link);
-				$content .= ($i).".<a href='".$link[1]."'>".$link[0]."</a>(".$link[2].") [<a href='%adress%/index.php/admin/menus/edit/".$menu['alias']."/".$num."'>Р РµРґР°РєС‚РёСЂРѕРІР°С‚СЊ</a> | <a href='%adress%/index.php/admin/menus/delelem/".$menu['alias']."/".$num."'>РЈРґР°Р»РёС‚СЊ</a>]<br/>";
+				$content .= ($i).".<a href='".$link[1]."'>".$link[0]."</a>(".$link[2].") [<a href='%adress%/index.php/admin/menus/edit/".$menu['alias']."/".$num."'>Редактировать</a> | <a href='%adress%/index.php/admin/menus/delelem/".$menu['alias']."/".$num."'>Удалить</a>]<br/>";
 				$i++;
 			}
 		}
 		
-		$content .= "<br/><a href='%adress%/index.php/admin/menus/addlink/".$adm[4]."'>Р”РѕР±Р°РІРёС‚СЊ СЌР»РµРјРµРЅС‚ РјРµРЅСЋ.</a>";
+		$content .= "<br/><a href='%adress%/index.php/admin/menus/addlink/".$adm[4]."'>Добавить элемент меню.</a>";
 	
 	}elseif($adm[3] == "addlink"){
 	
-		$content .= " | <a href='%adress%/index.php/admin/menus'>Рљ СЃРїРёСЃРєСѓ РјРµРЅСЋ.</a> | <a href='%adress%/index.php/admin/menus/view/".$adm[4]."'>Рљ СЃРїРёСЃРєСѓ СЌР»РµРјРµРЅС‚РѕРІ.</a>";
+		$content .= " | <a href='%adress%/index.php/admin/menus'>К списку меню.</a> | <a href='%adress%/index.php/admin/menus/view/".$adm[4]."'>К списку элементов.</a>";
 		
-		$menu_arr = $db->getAllOnField("menus","id",$adm[4],"id",true);
-		$menu = $menu_arr[0];
+		$menu = $db->getAllOnField("menus","id",$adm[4],"id",true);
+		$menu = $menu[0];
 		
-		$content .= "<br/>Р”РѕР±Р°РІР»РµРЅРёРµ РЅРѕРІРѕРіРѕ СЌР»РµРјРµРЅС‚Р° РјРµРЅСЋ.";
+		$content .= "<br/>Добавление нового элемента меню.";
 		
 		$arr['menu_id'] = $adm[4];
-		$content .= libs::GetLib("templates")->getRTmpl("admin\add_link",$arr);
+		$content .= templates::getRTmpl("admin\add_link",$arr);
 	
 	}elseif($adm[3] == "savlink"){
 	
-		$content .= " | <a href='%adress%/index.php/admin/menus'>Рљ СЃРїРёСЃРєСѓ РјРµРЅСЋ.</a> | <a href='%adress%/index.php/admin/menus/view/".$adm[4]."'>Рљ СЃРїРёСЃРєСѓ СЌР»РµРјРµРЅС‚РѕРІ.</a>";
+		$content .= " | <a href='%adress%/index.php/admin/menus'>К списку меню.</a> | <a href='%adress%/index.php/admin/menus/view/".$adm[4]."'>К списку элементов.</a>";
 		
-		$menu_arr = $db->getAllOnField("menus","id",$adm[4],"id",true);
-		$menu = $menu_arr[0];
+		$menu = $db->getAllOnField("menus","id",$adm[4],"id",true);
+		$menu = $menu[0];
 		
-		$lnk = str_replace(config::site_url,"%adress%",filter_input(INPUT_POST,'link'));
+		$lnk = str_replace(config::site_url,"%adress%",$_POST['link']);
 		
-                if(filter_input(INPUT_POST,'num') === "add"){$db->setField("menus","links",filter_input(INPUT_POST,'title')."|".$lnk."|".filter_input(INPUT_POST,'group').",".$menu['links'],"id",$adm[4]);}
+		if($_POST['num'] === "add") $db->setField("menus","links",$_POST['title']."|".$lnk."|".$_POST['group'].",".$menu['links'],"id",$adm[4]);
 		else{
 			$mn = explode(",",$menu['links']);
 			$i = 0;
 			foreach($mn as $num=>$link){
-                                if($num != 0){$links .= ",";}
-				if(filter_input(INPUT_POST,'num') == $num){
-					$links .= filter_input(INPUT_POST,'title')."|".$lnk."|".filter_input(INPUT_POST,'group');
-				}else{ $links .= $mn[$i]; }
+				if($num != 0) $links .= ",";
+				if($_POST['num'] == $num){
+					$links .= $_POST['title']."|".$lnk."|".$_POST['group'];
+				}else{
+					$links .= $mn[$i];
+				}
 				$i++;
 			}
 			$db->setField("menus","links",$links,"id",$adm[4]);
 		}
-		$content .= libs::GetLib("templates")->getRTmpl("success",array("message"=>"РџСѓРЅРєС‚ РјРµРЅСЋ СѓСЃРїРµС€РЅРѕ СЃРѕС…СЂР°РЅРµРЅ."));
+		$content .= templates::getRTmpl("success",array("message"=>"Пункт меню успешно сохранен."));
 	
 	}elseif($adm[3] == "edit"){
 	
 		if($adm[4]!="" && $adm[5]!=""){
 		
-			$content .= " | <a href='%adress%/index.php/admin/menus'>Рљ СЃРїРёСЃРєСѓ РјРµРЅСЋ.</a> | <a href='%adress%/index.php/admin/menus/view/".$adm[4]."'>Рљ СЃРїРёСЃРєСѓ СЌР»РµРјРµРЅС‚РѕРІ.</a>";
+			$content .= " | <a href='%adress%/index.php/admin/menus'>К списку меню.</a> | <a href='%adress%/index.php/admin/menus/view/".$adm[4]."'>К списку элементов.</a>";
 		
-			$menu_arr = $db->getAllOnField("menus","alias",$adm[4],"id",true);
-			$menu = $menu_arr[0];
+			$menu = $db->getAllOnField("menus","alias",$adm[4],"id",true);
+			$menu = $menu[0];
 			
 			$links = explode(",",$menu['links']);
 			
@@ -95,7 +93,7 @@
 					$arr = explode("|",$link);
 					$arr['num'] = $num;
 					$arr['menu_id'] = $menu['id'];
-					$content .= libs::getLib("templates")->getRTmpl("admin/lnk_edit",$arr);
+					$content .= templates::getRTmpl("admin/lnk_edit",$arr);
 				}
 			
 			}
@@ -104,48 +102,48 @@
 	
 	}elseif($adm[3] == "delelem"){
 	
-		$menu_arr = $db->getAllOnField("menus","alias",$adm[4],"id",true);
-		$menu = $menu_arr[0];	
+		$menu = $db->getAllOnField("menus","alias",$adm[4],"id",true);
+		$menu = $menu[0];	
 	
-		$content .= " | <a href='%adress%/index.php/admin/menus'>Рљ СЃРїРёСЃРєСѓ РјРµРЅСЋ.</a> | <a href='%adress%/index.php/admin/menus/view/".$menu['id']."'>Рљ СЃРїРёСЃРєСѓ СЌР»РµРјРµРЅС‚РѕРІ.</a>";
+		$content .= " | <a href='%adress%/index.php/admin/menus'>К списку меню.</a> | <a href='%adress%/index.php/admin/menus/view/".$menu['id']."'>К списку элементов.</a>";
 		
 		$mn = explode(",",$menu['links']);
 		$i = 0;
 		foreach($mn as $num=>$link){
-                        if($adm[5] == $num || $link === ""){$i++;}
+			if($adm[5] == $num || $link === "") $i++;
 			else{
-                        if($num != 0){$links .= ",".$mn[$i];}
-                        else{$links .= $mn[$i];}
+			if($num != 0) $links .= ",".$mn[$i];
+			else $links .= $mn[$i];
 			$i++;
 			}
 		}
 		$db->setField("menus","links",$links,"alias",$adm[4]);
-		$content .= libs::GetLib("templates")->getRTmpl("success",array("message"=>"РџСѓРЅРєС‚ РјРµРЅСЋ СѓСЃРїРµС€РЅРѕ СѓРґР°Р»РµРЅ."));
+		$content .= templates::getRTmpl("success",array("message"=>"Пункт меню успешно удален."));
 	
 	}elseif($adm[3] === "new"){
 	
-		$content .= " | <a href='%adress%/index.php/admin/menus'>Рљ СЃРїРёСЃРєСѓ РјРµРЅСЋ.</a>";
-                if(filter_input(INPUT_POST,'alias') == null){$content .= libs::GetLib("templates")->getTmpl("admin/new_menu");}
+		$content .= " | <a href='%adress%/index.php/admin/menus'>К списку меню.</a>";
+		if($_POST['alias'] == null) $content .= templates::getTmpl("admin/new_menu");
 		else{
 		
-			if(!$db->isExists("menus","alias",filter_input(INPUT_POST,'alias'))){
-				$db->insert("menus",array("alias"=>filter_input(INPUT_POST,'alias'),"title"=>filter_input(INPUT_POST,'title')));
-				$content .= libs::GetLib("templates")->getRTmpl("success",array("message"=>"РњРµРЅСЋ '".filter_input(INPUT_POST,'title')."' СѓСЃРїРµС€РЅРѕ СЃРѕР·РґР°РЅРѕ."));
-                        }else{$content .= libs::GetLib("templates")->getRTmpl("error",array("message"=>"РњРµРЅСЋ СЃ Р°Р»РёР°СЃРѕРј '".filter_input(INPUT_TYPE,'alias')."' СѓР¶Рµ СЃСѓС‰РµСЃС‚РІРµС‚, РїРѕРјРµРЅСЏР№С‚Рµ Р°Р»РёР°СЃ."));}
+			if(!$db->isExists("menus","alias",$_POST['alias'])){
+				$db->insert("menus",array("alias"=>$_POST['alias'],"title"=>$_POST['title']));
+				$content .= templates::getRTmpl("success",array("message"=>"Меню '".$_POST['title']."' успешно создано."));
+			}else $content .= templates::getRTmpl("error",array("message"=>"Меню с алиасом '".$_POST['alias']."' уже существет, поменяйте алиас."));
 		}
 		
 	
 	}elseif($adm[3] === "remmen"){
 	
-		$content .= " | <a href='%adress%/index.php/admin/menus'>Рљ СЃРїРёСЃРєСѓ РјРµРЅСЋ.</a>";
+		$content .= " | <a href='%adress%/index.php/admin/menus'>К списку меню.</a>";
 		
 		if($db->isExists("menus","id",$adm[4])){
 		
 			$db->deleteOnId("menus",$adm[4]);
-			$content .= libs::GetLib("templates")->getRTmpl("success",array("message"=>"РњРµРЅСЋ СЃ id ".$adm[4]." СѓСЃРїРµС€РЅРѕ СѓРґР°Р»РµРЅРѕ."));
+			$content .= templates::getRTmpl("success",array("message"=>"Меню с id ".$adm[4]." успешно удалено."));
 		
-                }else{$content .= libs::GetLib("templates")->getRTmpl("error",array("message"=>"РњРµРЅСЋ СЃ id ".$adm[4]." РЅРµ РЅР°Р№РґРµРЅРѕ."));}
+		}else $content .= templates::getRTmpl("error",array("message"=>"Меню с id ".$adm[4]." не найдено."));
 		
-        }else{$content .= "<br/>РћС€РёР±РєР°";}
+	}else $content .= "<br/>Ошибка";
 
 ?>
