@@ -15,7 +15,6 @@ final class scripts{//класс для загрузки скриптов и получения информации о них
             include_once "scripts/".$info['file'].".php";
             if(!class_exists($alias)){return false;}
         }
-          echo $alias.'<br/>';
         if(isset($info['a_file']) && !is_file("scripts/".$info['a_file'].".php")){return false;}
         elseif(isset($info['a_file'])){
             include_once "scripts/".$info['a_file'].".php";
@@ -45,20 +44,3 @@ final class scripts{//класс для загрузки скриптов и получения информации о них
     
 }
 
-
-$sql = mysql_connect($db_host.':'.$db_port,$db_user,$db_pass) or die('Ошибка подключения к БД: '.mysql_error()); // Подключение к базе с пользователями
-mysql_select_db($db_database,$sql);
-
-
-
-class Config{
-
-	const db_pref = "dle_";
-	const db_host = "localhost";
-	const db_user = "web";
-	const db_pass = "web12345";
-	const db_name = "web";
-	const debug = true;
-	const site_name = "Local testing site";
-
-}
