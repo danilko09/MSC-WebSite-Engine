@@ -1,58 +1,74 @@
 <?php
+$title = "Административная панель";
+admin_panel::auth();
+$content = admin_panel::makeContent();
 
-// РЎРёСЃС‚РµРјРЅС‹Р№ СЃРєСЂРёРїС‚ Р°РґРјРёРЅРєРё, РїРѕРґРіСЂСѓР¶Р°РµС‚ СЃРєСЂРёРїС‚С‹ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РёРІРЅРѕР№ РїР°РЅРµР»Рё РёР»Рё РІС‹РґР°РµС‚ РјРµРЅСЋС€РєСѓ Р°РґРјРёРЅРєРё
-// Р•С‰С‘ РїРѕР»РЅРѕСЃС‚СЊСЋ РЅРµ РґРѕРґРµР»Р°РЅ, С‚Р°Рє С‡С‚Рѕ СЃРёР»СЊРЅРѕ РЅРµ РїСѓРіР°Р№С‚РµСЃСЊ РµСЃР»Рё С‡С‚Рѕ-С‚Рѕ РїР»РѕС…РѕРµ СѓРІРёРґРёС‚Рµ
+final class admin_panel {
 
-	$content_db[0]['title'] = "РђРґРјРёРЅРёСЃС‚СЂР°С‚РёРІРЅР°СЏ РїР°РЅРµР»СЊ";
-	$content = "";
-	
-	
-	if(libs::LoadLib("users")){
-		$auth = libs::GetLib("users")->IsAuthorized();
-                
-		if($auth != "1"){
-                libs::GetLib("users")->TryLogin();
-                $auth = libs::GetLib("users")->IsAuthorized();
-                }
-                
-		$login = libs::GetLib("users")->GetLogin();
-		$group = libs::GetLib("users")->GetGroup();
-	}else{
-		$auth = "no_lib";
-	}
-
-	if($auth == "1" && $group == "admin"){
-	
-		if($adm[2] == ""){
-                    
-                $menu = libs::GetLib("database")->getAll("admin","group", true);
-	
-			foreach($menu as $num=>$link){
-			
-				$links[$link['group']] .= "<a href='%adress%/index.php/admin/".$link['alias']."'>".$link['title']."</a><br/>";
-			
-			}
-			
-			foreach($links as $group=>$cnt){
-			
-				$content .= str_replace("[title]", $group,str_replace("[content]",$cnt,libs::GetLib("templates")->GetTmpl("admin/post")));
-			
-			}
-			
-		}else{
-		
-                        if(is_file("scripts/admin/".$adm[2].".php")){include_once("scripts/admin/".$adm[2].".php");}
-                        else{$content = "<div><h5>РћС€РёР±РєР° 404 | <a href='%adress%/index.php/admin'>РІ Р°РґРјРёРЅРёСЃС‚СЂР°С‚РёРІРЅСѓСЋ РїР°РЅРµР»СЊ</a></h5>РќРµ РЅР°Р№РґРµРЅ С„Р°Р№Р» '%adress%/scripts/admin/".$adm[2].".php'.<br/><br/>Р’РѕР·РјРѕР¶РЅРѕ РІС‹ РїРѕРїР°Р»Рё РЅР° СЌС‚Сѓ СЃС‚СЂР°РЅРёС†Сѓ СЃР»СѓС‡Р°Р№РЅРѕ РЅР°Р±СЂР°РІ РЅРµ РІРµСЂРЅС‹Р№ Р°РґСЂРµСЃ СЃС‚СЂР°РЅРёС†С‹, РёР»Рё СЂР°СЃС€РёСЂРµРЅРёРµ, Рє РєРѕС‚РѕСЂРѕРјСѓ РїСЂРёРЅР°РґР»РµР¶РёС‚ СЌС‚РѕС‚ С„Р°Р№Р», Р±С‹Р»Рѕ СѓРґР°Р»РЅРµРѕ.</div>";}
-		
-		}
-			
-	}elseif($auth == "1" && $group != "admin"){
-		$content .= "<div class='warning-box'>Р’С‹ РЅРµ СЃРѕСЃС‚РѕРёС‚Рµ РІ РіСЂСѓРїРїРµ 'Р°РґРјРёРЅРёСЃС‚СЂР°С‚РѕСЂС‹' Рё РЅРµ РјРѕР¶РµС‚Рµ РїРѕР»СѓС‡РёС‚СЊ РґРѕСЃС‚СѓРї Рє СЌС‚РѕР№ СЃС‚СЂР°РЅРёС†Рµ.</div>";
-	}elseif($auth == "0" || $auth == null){
-	
-		$content .= "<div class='warning-box'>Р’С‹ РЅРµ Р°РІС‚РѕСЂРёР·РёСЂРѕРІР°РЅРЅС‹.</div><div style='width: 150px;'><p>".libs::GetLib("users")->GetLoginForm()."</p></div>";
-	
-	}elseif($auth == "no_lib"){
-		$content = "<div class='warning-box'>РќРµ РЅР°Р№РґРµРЅР° Р±РёР±Р»РёРѕС‚РµРєР° 'users', РѕРЅР° РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ Р°РІС‚РѕСЂРёР·Р°С†РёРё РїРѕСЃРµС‚РёС‚РµР»РµР№ СЃР°Р№С‚Р°, Р±РµР· РЅРµРµ РґРѕСЃС‚СѓРї Рє Р°РґРјРёРЅРёСЃС‚СЂР°С‚РёРІРЅРѕР№ РїР°РЅРµР»Рё РЅРµ РІРѕР·РјРѕР¶РµРЅ.</div>";
-	}
-?>
+    private static $auth = "0";
+    private static $login = "";
+    private static $group = "guest";
+    private static $message = "";
+    
+    public static function auth(){
+        if(scripts::checkScript("users")){//Авторизация
+            self::$auth = users::IsAuthorized();
+            if(self::$auth != "1"){ users::TryLogin(); self::$auth = users::IsAuthorized();}
+            self::$login = users::GetLogin();
+            self::$group = users::GetGroup();
+        }else{
+            self::$auth = "no_lib";
+        }
+    }
+    
+    public static function makeContent(){   
+        $content = "";
+        
+        if(self::$auth == "1" && self::$group == "admin"){//выбор и вывод содержимого страницы
+            $content = self::main();
+        }elseif(self::$auth == "1" && self::$group != "admin"){//если не админ
+                self::$message .= "<div class='warning-box'>Вы не состоите в группе 'администраторы' и не можете получить доступ к этой странице.</div>";
+        }elseif(self::$auth == "0" || self::$auth == null){//если не авторизирован
+                self::$message .= "<div class='warning-box'>Вы не авторизированны.</div><div style='width: 150px;'><p>".users::GetLoginForm()."</p></div>";
+        }elseif(self::$auth == "no_lib"){//если нет библиотеки
+                self::$message = "<div class='warning-box'>Не найдена библиотека 'users', она используется для авторизации посетителей сайта, без нее доступ к административной панели не возможен.</div>";
+        }
+        return (self::$message != "") ? self::$message.$content : $content;
+    }
+    private static function main(){
+        global $adm;$content = "";
+        
+        var_dump(scripts::checkScript($adm[2]));
+        if(!isset($adm[2]) || $adm[2] == ""){//меню в админке
+        $links = self::genMenu();
+        foreach($links as $group=>$cnt){
+            $content .= str_replace("[title]", $group,str_replace("[content]",$cnt,templates::GetTmpl("admin/post")));
+        }
+    }elseif(scripts::checkScript($adm[2])){
+    
+        $tmp = "admin_".$adm[2];
+        $content = $tmp::genContent();
+        
+    }else{//404 или какая-то страница в админке
+        
+            $content = "<div><h5>Ошибка 404 | <a href='%adress%/index.php/admin'>в административную панель</a></h5>Не найден файл '%adress%/scripts/admin/".$adm[2].".php'.<br/><br/>Возможно вы попали на эту страницу случайно набрав не верный адрес страницы, или расширение, к которому принадлежит этот файл, было удалнео.</div>";
+        
+    }
+    return $content;
+    }
+    
+    private static function genMenu(){
+        $links = array();
+        $sc = scripts::getAllScriptsInfo();
+        foreach($sc as $alias=>$info){
+            if(!isset($info['a_title']) || !isset($info['a_category'])){continue;}
+            if(isset($links[$info['a_category']])){
+                $links[$info['a_category']] .= "<a href='%adress%/index.php/admin/".$alias."'>".$info['a_title']."</a><br/>";
+            }else{
+            $links[$info['a_category']] = "<a href='%adress%/index.php/admin/".$alias."'>".$info['a_title']."</a><br/>";
+            }            
+        }
+        return $links;
+    }
+    
+}

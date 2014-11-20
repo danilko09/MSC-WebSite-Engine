@@ -1,22 +1,27 @@
 <?php
 
-//Р РµР°Р»РёР·Р°С†РёСЏ AJAX РґР»СЏ CMS MSC WebSite Engine
-//Р—Р°РїСЂРѕСЃ РґРѕР»Р¶РµРЅ РїРѕСЃС‹Р»Р°С‚СЊСЃСЏ РјРµС‚РѕРґРѕРј GET(Р»РёР±Рѕ POST, РЅРѕ РїР°СЂР°РјРµС‚СЂС‹ СѓРєР°Р·Р°С‚СЊ РІ URL)
-//Р¤РѕСЂРјР°С‚ Р·Р°РїСЂРѕСЃР°:
-//		type: С‚РёРї РґР°РЅРЅС‹С… (position | system | block | scrirpt | menu)
-//		РѕСЃС‚Р°Р»СЊРЅС‹Рµ РїР°СЂР°РјРµС‚СЂС‹ РїРѕ С‚РёРїСѓ (Р°РЅР°Р»РѕРіРёС‡РЅРѕ С‚РµРіСѓ <content /> РІСЃРµ РѕСЃС‚Р°Р»СЊРЅС‹Рµ РїР°СЂР°РјРµС‚СЂС‹)
-//		
-//РЅР°С‡Р°Р»Рѕ СЃРєСЂРёРїС‚Р°
+//Реализация AJAX для CMS MSC WebSite Engine
+//Запрос должен посылаться методом GET(либо POST, но параметры указать в URL)
+//Формат запроса:
+//		type: тип данных (position | system | block | scrirpt | menu)
+//		остальные параметры по типу (аналогично тегу <content /> все остальные параметры)
+
+//начало скрипта
+
 session_start();
-//РџРѕРґРіСЂСѓР·РєР° РєРѕРЅС„РёРіР°	
-if(!is_file("cms/config.php")){exit;}	
+
+//Подгрузка конфига	
+if(!is_file("cms/config.php")) exit;	
 include("cms/config.php");
-//РџРѕРґРєР»СЋС‡РµРЅРёРµ "Р±РёР±Р»РёРѕС‚РµРєР°СЂСЏ"	
-if(!is_file("cms/lib.php")){exit;}	
+
+//Подключение "библиотекаря"	
+if(!is_file("cms/lib.php")) exit;	
 include("cms/lib.php");
-//РџРѕР»СѓС‡РµРЅРёРµ РЅРµРѕР±С…РѕРґРёРјРѕРіРѕ РєРѕРЅС‚РµРЅС‚Р° Рё РѕС‚РїСЂР°РІРєР° РµРіРѕ РєР»РёРµРЅС‚Сѓ
-$arr = filter_input_array(INPUT_GET);
-if($arr['type'] == "content"){$ajax = true; include("cms/templates.php");}
-else{echo libs::GetLib("templates_types")->getContentByTag($arr);}
+
+//Получение необходимого контента и отправка его клиенту
+echo libs::GetLib("templates_types")->getContentByTag($_GET);
+
+//Завершение работы
+exit;
 
 ?>

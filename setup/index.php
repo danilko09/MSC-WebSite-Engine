@@ -1,33 +1,41 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 	session_start();
-    if(filter_input(INPUT_GET,'restart') == 1){$_SESSION = null; echo "<h1><font color='red'>РЈСЃС‚Р°РЅРѕРІС‰РёРє РїРµСЂРµРєР»СЋС‡РµРЅ РЅР° 1 С€Р°Рі. РџРµСЂРµР№РґРёС‚Рµ РїРѕ Р°РґСЂРµСЃСѓ, РєСѓРґР° РІС‹ СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚Рµ CMS.</font></h1>";}
 	
 	$finish = false;
-	include("config.php");
 	
+	//Очередь скриптов
 	
-	//РџРѕРґРєР»СЋС‡РµРЅРёРµ СЃРєСЂРёРїС‚РѕРІ РёР· РѕС‡РµСЂРµРґРё
+	$scripts['0'] = "welcome";
+	$scripts['1'] = "database";
+	$scripts['2'] = "admin";
+	$scripts['3'] = "components";
+	$scripts['4'] = "finish";
 	
-    if($_SESSION['pos'] === "" || $_SESSION['pos'] === null){$_SESSION['pos'] = 0;}
+	//Подключение скриптов из очереди
 	
-	if($scripts[$_SESSION['pos']]!=null)include("scripts/".$scripts[$_SESSION['pos']].".php");
-    else{$content = "Р’Рѕ РІСЂРµРјСЏ СѓСЃС‚Р°РЅРѕРІРєРё РІРѕР·РЅРёРєР»Р° РѕС€РёР±РєР°.<br/>РџРѕР¶Р°Р»СѓР№СЃС‚Р°, СЃРІСЏР¶РёС‚РµСЃСЊ СЃ СЂР°Р·СЂР°Р±РѕС‚С‡РёРєРѕРј РїСЂРѕРµРєС‚Р° Рё СЃРѕРѕР±С‰РёС‚Рµ РѕР± СЌС‚РѕРј.";}
+        if(!isset($_SESSION['pos']) || $_SESSION['pos']  === "" || $_SESSION['pos'] === null){$_SESSION['pos'] = 0;}
+	$message = "";$content = "";
+	include("scripts/".$scripts[$_SESSION['pos']].".php");
 	
-	//РџРѕРґРіСЂСѓР·РєР° С€Р°Р±Р»РѕРЅР°
-        
-    $ech = filter_input(INPUT_SERVER,'HTTP_ORIGIN').filter_input(INPUT_SERVER,'REQUEST_URI');
+	//Подгрузка шаблона
+	
+	$site = file_get_contents("tmpl.html");
+	$site = str_replace("%content%",$message.$content,$site);
+	$ech = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
 	$ech = str_replace("/setup/", "", $ech);
-        
-	$site = str_replace("%adress%",$ech,str_replace("%content%",$message.$content,file_get_contents("tmpl.html")));
+	$site = str_replace("%adress%",$ech,$site);
 	echo $site;
-    if($finish){RemoveDir("../setup");}
+	if($finish) RemoveDir("../setup");
 	
-	//Р’СЃРїРѕРјРѕРіР°С‚РµР»СЊРЅС‹Рµ С„СѓРЅРєС†РёРё
+	//Вспомогательные функции
 	
 	function next_stage(){
 	
 	
-		$ech = filter_input(INPUT_SERVER,'HTTP_ORIGIN').filter_input(INPUT_SERVER,'REQUEST_URI');
+		$ech = $_SERVER['HTTP_ORIGIN'].$_SERVER['REQUEST_URI'];
 		$ech = str_replace("/setup/", "", $ech);
 		
 		$_SESSION['pos']++;
@@ -44,19 +52,40 @@
 	}
 	
 	function RemoveDir($path)
-	{
-		if(file_exists($path) && is_dir($path)){$dirHandle = opendir($path);
-			while (false !== ($file = readdir($dirHandle))){
-				if ($file!='.' && $file!='..'){
-					$tmpPath=$path.'/'.$file;chmod($tmpPath, 0777);
-					
-                                        if (is_dir($tmpPath)){RemoveDir($tmpPath);}// РµСЃР»Рё РїР°РїРєР° 
-					else{if(file_exists($tmpPath)){unlink($tmpPath);}/*СѓРґР°Р»СЏРµРј С„Р°Р№Р»*/}
+	{global $message;
+		if(file_exists($path) && is_dir($path))
+		{
+			$dirHandle = opendir($path);
+			while (false !== ($file = readdir($dirHandle))) 
+			{
+				if ($file!='.' && $file!='..')
+				{
+					$tmpPath=$path.'/'.$file;
+					if(!chmod($tmpPath, 0777)){
+                                            $messages .= "<br/>Не удалось сменить права на файл '".$tmpPath."'";
+                                        }
+					if (is_dir($tmpPath))
+					{  // если папка
+						RemoveDir($tmpPath);
+					} 
+					else 
+					{ 
+						if(file_exists($tmpPath))
+						{
+							// удаляем файл 
+                                                        if(!unlink($tmpPath)){$message .= "<br/>Не удалось удалить файл '".$tmpPath."'.<br/>Установка системы завершена, удалите папку 'setup' на сайте.";return;}
+                                                        
+						}
+					}
 				}
-			}closedir($dirHandle);
+			}
+			closedir($dirHandle);
 			
-			// СѓРґР°Р»СЏРµРј С‚РµРєСѓС‰СѓСЋ РїР°РїРєСѓ
-			if(file_exists($path)){rmdir($path);}
+			// удаляем текущую папку
+			if(file_exists($path))
+			{
+				rmdir($path);
+			}
 		}
 	}
 
