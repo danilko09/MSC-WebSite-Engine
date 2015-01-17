@@ -1,14 +1,12 @@
-AddDefaultCharset cp1251
+AddDefaultCharset UTF-8
 <IfModule mod_rewrite.c>
  
     RewriteEngine On
- 
-    RewriteBase /
- 
-    RewriteRule ^modules.* /index.php [L,QSA] 
+  
+    RewriteRule /index.php [L,QSA] 
  
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule (.*) /index.php/$1 [L,QSA] 
+    RewriteRule (.*) /4/index.php/$1 [L,QSA] 
  
 </IfModule>
