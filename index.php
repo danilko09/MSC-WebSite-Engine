@@ -278,7 +278,7 @@ final class WSE_ENGINE{
 
     private static function getRegistredTypeBy($tag){
 
-        $code = isset($tag['type']) ? self::$types[$tag['type']] : " ";
+        $code = isset($tag['type']) && isset(self::$types[$tag['type']]) ? self::$types[$tag['type']] : " ";
         if(self::checkScript($code) && method_exists($code, "handleTag")){
             return $code::handleTag($tag);
         }elseif(WSE_DEBUG){

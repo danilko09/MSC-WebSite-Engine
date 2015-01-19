@@ -86,10 +86,33 @@
 </div>
 </div>
   <div class="col-md-4">
-  <a href="#" class="btn btn-success btn-lg btn-block">Как начать играть ?</a>
+  <a href="#letsStart" class="btn btn-success btn-lg btn-block" data-toggle="modal" data-target="#letsStart">Как начать играть ?</a>
+  
+  <div class="modal fade" id="letsStart" tabindex="-1" role="dialog" aria-labelledby="letsStartLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Как начать играть ?</h4>
+      </div>
+      <div class="modal-body">
+        Для начала игры на нашем сервере вам необходимо выполнить следующие пункты:<br>
+        <ul>
+            <li>Иметь аккаунт в системе msc-auth (регистрация на нашем сайте)</li>
+            <li>Скачать лаунчер с нашего сайта или иметь у себя на компьютере универсальный лаунчер-каталог msc</li>
+            <li>Быстрое и стабильное соединение с интернетом для комфортной игры</li>
+        </ul>
+        А дальше запускаете лаунчер, выбираете сервер и наслаждаетесь игрой :-)
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+</div>
   <br>
   <div class="panel panel-default">
-  <div class="panel-heading">Авторизация</div>
+  <div class="panel-heading">Профиль</div>
   <div class="panel-body">
       <content type="auth" name="auth_block"/>
   <!--  <div class="form-group">
@@ -113,7 +136,16 @@
   <a href="#" class="btn btn-success btn-block">Войти</a>
 </div>-->
   </div>
-</div></div>
+</div>
+  
+  <div class="panel panel-default">
+  <div class="panel-heading">Статус серверов</div>
+  <div class="panel-body">
+      <content type="mon" name="auth_block"/>
+  </div>
+</div>
+  
+  </div>
 </div>
 <div class="well well-sm">
   Used: Core MSC Engine with Design by Ilya Yatsenko.
