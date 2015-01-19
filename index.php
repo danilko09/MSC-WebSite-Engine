@@ -134,9 +134,7 @@ final class WSE_ENGINE{
     public static function checkScript($alias){
 
         $allInfo = self::getAllScriptsInfo();
-        if(!isset($allInfo[$alias])){
-            return false;
-        }
+        if(!isset($allInfo[$alias])){ return false; }
         
         $info = $allInfo[$alias];
         if(!(isset($info['file']) || isset($info['a_file']))){
@@ -147,17 +145,13 @@ final class WSE_ENGINE{
             return false;
         }elseif(isset($info['file'])){
             include_once WSE_SCRIPTS_DIR.DIRECTORY_SEPARATOR.$info['file'].".php";
-            if(!class_exists($alias)){
-                return false;
-            }
+            if(!class_exists($alias)){ return false; }
         }
         if(isset($info['a_file']) && !is_file(WSE_SCRIPTS_DIR.DIRECTORY_SEPARATOR.$info['a_file'].".php")){
             return false;
         }elseif(isset($info['a_file'])){
             include_once WSE_SCRIPTS_DIR.DIRECTORY_SEPARATOR.$info['a_file'].".php";
-            if(!class_exists("admin_".$alias)){
-                return false;
-            }
+            if(!class_exists("admin_".$alias)){ return false; }
         }
         return true;
     }
@@ -319,11 +313,11 @@ final class WSE_ENGINE{
             $text = str_replace($text_reply[0][$num], self::GetContentByTag($tag), $text);
             $tag = array();
         }
-        $text = str_replace("%index%",self::$index,str_replace("%base%",self::$url_base,str_replace("%url%",self::$url,str_replace("%tmpl_root%","%base%/cms/templates/".self::$template_name,$text))));
+        $ret = str_replace("%index%",self::$index,str_replace("%base%",self::$url_base,str_replace("%url%",self::$url,str_replace("%tmpl_root%","%base%/cms/templates/".self::$template_name,$text))));
         if(count($text_reply[0]) > 0){
-            $text = self::PrepearHTML($text);
+            $ret = self::PrepearHTML($ret);
         }
-        return $text;
+        return $ret;
     }
 
     public static function isTmpl($name){
@@ -370,6 +364,7 @@ final class WSE_ENGINE{
     }
 
     public static function getRTmpl($name, $arr){
+        
         $return = self::getTmpl($name);
 
         if($return == str_replace("[file]", "%tmpl_root%/".$name.".html", self::translate("TMPL_NOT_FOUND"))){
@@ -384,21 +379,26 @@ final class WSE_ENGINE{
             }
             return $return;
         }
+        
     }
     
     //Вывод таймингов
     
     private static $autoload = 0;
+    
     private static function printTimings(){
         
         if(WSE_DEBUG){
+            
             echo "<!-- page generation time: ".(round((microtime() - WSE_START_MICROTIME) * 1000))."ms\r\n"
                 ." scripts autoload time: ".self::$autoload."ms"
                 ."-->";
+            
         }
         
     }
 
 }
+
 define("WSE_START_MICROTIME", microtime());
 WSE_ENGINE::start();

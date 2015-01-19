@@ -27,7 +27,7 @@ final class auth{
         if(isset($_SESSION['auth']) && $_SESSION['auth'] == true){
             return WSE_ENGINE::PrepearHTML(WSE_ENGINE::getTmpl("auth/cant_reg"));
         }elseif(filter_input(INPUT_POST,'reg_post') == null){
-            return WSE_ENGINE::PrepearHTML(WSE_ENGINE::getTmpl("auth/registration"));
+            return WSE_ENGINE::PrepearHTML(WSE_ENGINE::getRTmpl("auth/registration",["message"=>""]));
         }else{
             if(self::$global_integration == 1){return WSE_ENGINE::PrepearHTML(WSE_ENGINE::getRTmpl("auth/registration", self::globalReg()));}
             elseif(self::$global_integration == 0){return WSE_ENGINE::PrepearHTML(WSE_ENGINE::getRTmpl("auth/registration", self::localReg()));}
@@ -64,7 +64,7 @@ final class auth{
                     $_SESSION['email'] = filter_input(INPUT_POST,'email');
                     //Создание локального кеша
                     self::updateByMail(filter_input(INPUT_POST,'email'), filter_input(INPUT_POST,'pass'), substr($ans,38), substr($ans,0,36));
-                    header("Location: ".WSE_ENGINE::getIndex());
+                    if(filter_input(INPUT_GET, 'ajax') == '1'){return ["message"=>"Регистрация пройдена успешно!"];}else{header("Location: ".WSE_ENGINE::getIndex());}
                     break;
             }
         }
@@ -94,6 +94,8 @@ final class auth{
             $_SESSION['auth'] = true;
             $_SESSION['email'] = $user['email'];
             header("Location: ".WSE_ENGINE::getURL());
+        }else{
+            return "Не верный логин или пароль";
         }
     }
     
@@ -148,15 +150,17 @@ final class auth{
                 self::$users_cache[$id]['login'] = $username;
                 self::$users_cache[$id]['password'] = $pass;
                 file_put_contents(__DIR__.DIRECTORY_SEPARATOR.'auth_users.ser', serialize(self::$users_cache));
-                break;
+                return;
             }
         }
         
-        self::$users_cache[]['email'] = $email;
-        self::$users_cache[]['uuid'] = $uuid;
-        self::$users_cache[]['login'] = $username;
-        self::$users_cache[]['password'] = $pass;
-        self::$users_cache[]['group'] = 'user';
+        self::$users_cache[] = [
+            'email' => $email,
+            'uuid' => $uuid,
+            'password' => $pass,
+            'login' => $username,
+            'group' => 'user',
+            ];
         file_put_contents(__DIR__.DIRECTORY_SEPARATOR.'auth_users.ser', serialize(self::$users_cache));
 
     }

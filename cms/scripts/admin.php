@@ -36,7 +36,7 @@ class admin{
         }
         $content = '';
         foreach($list as $category => $elements){
-            $content .= WSE_ENGINE::getRTmpl('admin/list_category', array('title'=>$category,'content'=>$elements))
+            $content .= WSE_ENGINE::getRTmpl('admin/list_category', array('title'=>$category,'content'=>$elements));
         }
     }
     
