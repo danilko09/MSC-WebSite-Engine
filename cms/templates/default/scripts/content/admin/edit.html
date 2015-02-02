@@ -1,0 +1,21 @@
+<form method="POST">
+    <input type="hidden" name="secret" value="1"/>
+ <div class="form-group">
+  <div class="input-group">
+    <span class="input-group-addon">Название</span>
+    <input class="form-control" name="title" type="text" value="[title]" placeholder="Название страницы">
+  </div><br/>
+  <div class="input-group">
+    <span class="input-group-addon">Алиас *</span>
+    <input class="form-control" type="text" name="alias" value="[alias]" placeholder="Алиас страницы">
+  </div>
+</div>
+    <script src="//tinymce.cachefly.net/4.1/tinymce.min.js"></script>
+<script>tinymce.init({selector:'textarea'});</script>
+<textarea name="content" style="height: 200px;">[content]</textarea><br/>
+<input type="submit" class="btn btn-success btn-block" value="Сохранить"/>
+</form>
+<br/>
+<div class="alert alert-info">
+    Поля отмеченные знаком "*" обязательны для заполнения. (Если поле не заполнено, то после сохранения страница будет автоматически удалена) 
+</div>
